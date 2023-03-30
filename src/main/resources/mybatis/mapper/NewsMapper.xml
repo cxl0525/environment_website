@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qdu.mapper.NewsMapper">
+<!--    要将user score tag 跟 news连接-->
+    <resultMap id="NewsMap" type="News">
+        <id column="newsId" property="newsId"></id>
+        <result column="newsTitle" property="newsTitle"></result>
+        <result column="newsContent" property="newsContent"></result>
+        <result column="newsReleaseDate" property="newsReleaseDate"></result>
+        <result column="newsImagePath" property="newsImagePath"></result>
+        <result column="newsVideoPath" property="newsVideoPath"></result>
+        <result column="newsIsCheck" property="newsIsCheck"></result>
+        <result column="newsClicks" property="newsClicks"></result>
+        <association property="newsPublisher" javaType="user">
+            <id column="newsPublisher" property="userId"/>
+            <result column="userName" property="userName"/>
+            <result column="userScore" property="userScore"/>
+<!--            <result property="userPassword" column="userPassword"/>-->
+<!--            <result property="userRealName" column="userRealName"/>-->
+            <result property="userGender" column="userGender"/>
+            <result property="userPhone" column="userPhone"/>
+<!--            <result property="userIdentity" column="userIdentity"/>-->
+            <result property="userEmail" column="userEmail"/>
+            <result property="userAddress" column="userAddress"/>
+            <result property="userQQId" column="userQQId"/>
+            <result property="userWeChatId" column="userWeChatId"/>
+            <result property="userAvatar" column="userAvatar"/>
+        </association>
+        <association property="newsTag" javaType="Tag">
+            <id column="newsTag" property="tagId"/>
+            <result column="tagName" property="tagName"/>
+        </association>
+    </resultMap>
+<!--    newsId	newsTitle	newsContent	newsReleaseDate	newsPublisher	-->
+<!--    newsImagePath	newsVideoPath	newsIsCheck	newsClicks	-->
+<!--    newsTag	tagId tagName-->
+<!--    userScore	userId 	userName	userPhone	userEmail	userAddress	userQQId	userWeChatId	userAvatar-->
+<select id="queryNewsListByPage" resultMap="NewsMap">
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsIsCheck = #{isNewsIsCheck} AND us.userScore > #{score}
+ORDER BY newsReleaseDate DESC
+</select>
+
+    <select id="queryNewsById" resultMap="NewsMap">
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsId = #{newsId}
+    </select>
+
+
+    <select id="queryNewsListByReleaseYearAndMonth" resultMap="NewsMap">
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsIsCheck = #{isNewsIsCheck} AND us.userScore > #{score}
+and  YEAR(newsReleaseDate) = #{releaseYear} AND MONTH(newsReleaseDate) = #{releaseMonth}
+ORDER BY newsReleaseDate DESC
+    </select>
+
+    <select id="queryNewsListByTagId" resultMap="NewsMap">
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsIsCheck = #{isNewsIsCheck} AND us.userScore > #{score}
+and n.newsTag = #{tagId}
+ORDER BY newsReleaseDate DESC
+    </select>
+
+    <update id="updateNews" parameterType="News">
+        update news set
+ newsTitle = #{newsTitle},	newsContent	= #{newsContent},newsReleaseDate = #{newsReleaseDate},
+ newsPublisher = #{newsPublisher.userId},	newsImagePath	= #{newsImagePath},newsVideoPath = #{newsVideoPath},
+ newsIsCheck = #{newsIsCheck}	,newsClicks = #{newsClicks}	,newsTag = #{newsTag.tagId}
+ where newsId = #{newsId}
+    </update>
+    <insert id="addNews" parameterType="News" useGeneratedKeys="true" keyColumn="newsId" keyProperty="newsId">
+        INSERT INTO news (newsTitle,	newsContent	,newsReleaseDate,
+        newsPublisher,	newsImagePath	,newsVideoPath,	newsIsCheck	,newsClicks	,newsTag)
+VALUES(#{newsTitle},	#{newsContent}	,#{newsReleaseDate},
+        #{newsPublisher.userId},	#{newsImagePath}	,#{newsVideoPath},	#{newsIsCheck}	,#{newsClicks}	,#{newsTag.tagId}
+        )
+    </insert>
+
+
+
+    <select id="queryNewsListByLaunchedUser" resultMap="NewsMap">
+
+
+
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId where
+n.newsPublisher = #{userId}
+ORDER BY newsReleaseDate DESC
+</select>
+
+
+<select id="queryNewsListByTagIdAndLaunchedUser" resultMap="NewsMap">
+    				SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsIsCheck = #{isNewsIsCheck} AND us.userScore > #{score}
+and n.newsTag = #{tagId} AND n.newsPublisher = #{user.userId}
+ORDER BY newsReleaseDate DESC
+</select>
+
+    <select id="queryNewsListByReleaseYearAndMonthAndLaunchedUser" resultMap="NewsMap">
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsIsCheck = #{isNewsIsCheck} AND us.userScore > #{score}
+and  YEAR(newsReleaseDate) = #{releaseYear} AND MONTH(newsReleaseDate) = #{releaseMonth}
+AND n.newsPublisher = #{user.userId}
+ORDER BY newsReleaseDate DESC
+    </select>
+
+
+    <select id="queryNewsListByTop" resultMap="NewsMap">
+SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+WHERE n.newsIsCheck = #{isNewsIsCheck} AND us.userScore > #{score}
+ORDER BY newsReleaseDate DESC
+ limit 0,#{num}
+    </select>
+
+    <select id="queryBlogListByPage" resultMap="NewsMap">
+       SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+ORDER BY newsReleaseDate DESC
+    </select>
+<delete id="deteleNews">
+delete from news where newsId = #{newsId}
+</delete>
+
+    <select id="queryBlogListBySearch" resultMap="NewsMap">
+       SELECT * FROM news n
+LEFT JOIN tag t on n.newsTag = t.tagId
+LEFT JOIN (SELECT * FROM
+( SELECT s.userScore,u.* FROM `user` u  LEFT JOIN score s
+ on u.userId = s.userId ) us1)
+us
+ON n.newsPublisher = us.userId
+where n.newsReleaseDate between #{newsReleaseDate1} and #{newsReleaseDate2}
+ORDER BY newsReleaseDate DESC
+    </select>
+
+</mapper>

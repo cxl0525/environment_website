@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>活动参加成员列表</title>
+	<link rel="stylesheet" href="../static/css/style.css" type="text/css">
+</head>
+<body>
+	<div class="header"  th:replace="_fragments :: menu(3)">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索">
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="interaction.html">互动</a>
+					</li>
+					<li>
+						<a href="personal.html">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="gallery">
+			<div>
+				<h2>参加人员列表</h2>
+				
+				
+			</div>
+			<div class="people_list_div">
+				<table border="1">
+					
+                    <tr>
+                        
+                        <th>
+                           编号
+                        </th>
+                        <th>
+                            用户名
+                        </th>
+                        <th>
+                            性别
+                        </th>
+                        <th>
+                            手机
+                        </th>
+                        <th>
+                            邮箱
+                        </th>
+                        <th>
+                            地址
+                        </th>
+<!--                        <th>-->
+<!--                            加入时间-->
+<!--                        </th>-->
+                        
+                    </tr>
+                    <tr th:each="user,userStat:${pageInfo.list}">
+                        
+                        <td th:text="${userStat.count}">
+                            1
+                        </td>
+                        <td th:text="${user.userName}">
+                            小明
+                        </td>
+                        <td th:text="${user.userGender}">
+                            男
+                        </td>
+                        <td  th:text="${user.userPhone}">
+                            13000000000
+                        </td>
+                        <td  th:text="${user.userEmail}">
+                            admin@mail.com
+                        </td>
+                        <td  th:text="${user.userAddress}">
+                            北京市 海淀区
+                        </td>
+<!--                        <td th:text="${#dates.format(user.actJoinDate,'yyyy-MM-dd HH:mm:ss')}">-->
+<!--                            2020-01-01 11:11:42-->
+<!--                        </td>-->
+                    </tr>
+               
+				</table>
+			</div>
+			<div class="page_number_div">
+        <span class="pageinfo">
+            共<label id="total" th:text="${pageInfo.total}"></label>条/
+            <label th:text="${pageInfo.pages}" style="color: red"></label>页
+        </span>
+
+				<a th:href="@{${pageRequest}(pageNum=${1})}"  >首页</a>
+				<a th:if="${pageInfo.pageNum>1}" th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum - 1})}" >上一页</a>
+
+				<b th:each="nav:${pageInfo.navigatepageNums}">
+					<a th:href="@{${pageRequest}(pageNum=${nav})}" class="page_number" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+					<a href="#" class="page_number_live" th:if= "${nav == pageInfo.pageNum}" th:text="${nav}"></a>
+				</b>
+
+				<a th:if="${pageInfo.pageNum<pageInfo.pages}"  th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum + 1})}"> 下一页</a>
+				<a th:href="@{${pageRequest}(pageNum=${pageInfo.pages})}">尾页</a>
+			</div>
+			
+			 
+		</div>
+	</div>
+	<div  th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+	<script th:src="@{/js/gallery.js}" src="../static/js/gallery.js"></script>
+</body>
+</html>

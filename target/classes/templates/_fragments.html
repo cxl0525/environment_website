@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title th:replace="${title}">博客详情</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+</head>
+<body>
+<div th:fragment="menu(n)" class="header">
+    <div>
+        <a href="index.html" id="logo"><img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="logo"></a>
+        <div>
+            <div class="rightTop">
+<!--                <div class="search">-->
+<!--                    <form>-->
+<!--                        <input type="search" id="input_search"/>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--                <img th:src="@{/images/search.png}" src="../static/images/search.png" class="search_img"/>-->
+                <div class="login" th:if="${session.loginUser==null}">
+                    &nbsp;&nbsp;
+                        <a  th:href="@{/login}" href="login.html">登录</a>
+                        <a th:href="@{/register}" href="register.html">注册</a>
+                </div>
+                <div  class="login" th:if="${session.loginUser!=null}" style="width:150px">
+                    <a th:title="退出" th:href="@{/user/logout}" >会员：<b th:text="${session.loginUser.userName}"></b> &nbsp;&nbsp;你好</a>
+                </div>
+
+
+
+            </div>
+            <ul>
+                <li th:classappend="${n==1} ? 'selected' ">
+                    <a th:href="@{/index}" href="index.html">首页</a>
+                </li>
+                <li th:classappend="${n==2} ? 'selected' ">
+                    <a th:href="@{/news}" href="blog.html">新闻</a>
+                </li>
+                <li th:classappend="${n==3} ? 'selected' ">
+                    <a th:href="@{/activity}" href="programs.html">活动</a>
+                </li>
+                <li th:classappend="${n==4} ? 'selected' ">
+                    <a th:href="@{/gallery}" href="gallery.html">图库</a>
+                </li>
+                <li th:classappend="${n==5} ? 'selected' ">
+                    <a th:href="@{/contact}" href="contact.html">联系我们</a>
+                </li>
+                <li th:classappend="${n==6} ? 'selected' ">
+                    <a th:href="@{/comment}" href="interaction.html">互动</a>
+                </li>
+                <li th:classappend="${n==7} ? 'selected' ">
+                    <a th:href="@{/person}" href="personal.html">我的</a>
+                </li>
+            </ul>
+        </div>
+        s
+    </div>
+</div>
+<div class="footer" th:fragment="footer">
+    <div>
+        <div>
+            <h4>24小时客服服务</h4>
+            <ul>
+                <li class="phone-num">
+                    512-943-1069 <br> 512-943-1068
+                </li>
+                <li class="email">
+                    <a href="#">info@163.com</a>
+                </li>
+                <li class="address">
+                    青岛市南区 <br> 漳州二路
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h4>最近推送</h4>
+            <ul>
+                <li>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+                    </p>
+                    - <span><a href="blog.html">1天前</a></span>
+                </li>
+                <li>
+                    <p>
+                        Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                    </p>
+                    - <span><a href="blog.html">2天前</a></span>
+                </li>
+            </ul>
+        </div>
+        <div class="connect">
+            <h4>联系我们</h4>
+            <a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+            <form action="index.html">
+                <h4>通讯注册</h4>
+                <input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;"
+                       onfocus="this.select()" onclick="this.value='';">
+                <input type="submit" id="submit" value="">
+            </form>
+        </div>
+    </div>
+    <div>
+        <ul>
+            <li>
+                <a href="index.html">首页</a>
+            </li>
+            <li>
+                <a href="blog.html">新闻</a>
+            </li>
+            <li>
+                <a href="activity.html">活动</a>
+            </li>
+            <li>
+                <a href="gallery.html">图库</a>
+            </li>
+            <li>
+                <a href="contact.html">联系我们</a>
+            </li>
+            <li>
+                <a href="interaction.html">互动</a>
+            </li>
+            <li>
+                <a href="personal.html">我的</a>
+            </li>
+        </ul>
+        <p>
+            &#169; 2020 自然有你 rights reserved&nbsp;
+        </p>
+    </div>
+</div>
+</body>
+</html>

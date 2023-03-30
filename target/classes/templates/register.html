@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+</head>
+
+<body>
+<div th:replace="_fragments :: menu(0)" class="header">
+	<div>
+		<a href="index.html" id="logo"><img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="logo"></a>
+		<div>
+			<div class="rightTop">
+				<div class="search">
+					<form>
+						<input type="search"  id="input_search"/>
+
+					</form>
+
+				</div>
+				<img th:src="@{/images/search.png}" src="../static/images/search.png" class="search_img" alt="搜索"/>
+				<div class="login">
+
+					&nbsp;&nbsp;
+					<a  th:href="@{/login}" href="login.html">登录</a>
+					<a th:href="@{/register}" href="register.html">注册</a>
+				</div>
+			</div>
+			<ul>
+				<li class="selected">
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="blog.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="#">互动</a>
+				</li>
+				<li>
+					<a href="#">我的</a>
+				</li>
+
+
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="body">
+	<div class="contact" style="padding-right: 0px;">
+		<div>
+
+			<div  th:style="'margin-top: 85px; margin-right: 0px; margin-left: 100px; background-image: url(/images/bg-body.jpg); border:none;'" style="margin-top: 85px; margin-right: 0px; margin-left: 100px; background-image: url(../static/images/bg-body.jpg); border:none;">
+				<img th:src="@{/images/blog-post2.jpg}" src="/images/blog-post2.jpg" alt="头像" style="border-radius: 50%;" id="userAvatar"/>
+
+			</div>
+		</div>
+		<div>
+			<h2>注册</h2>
+
+			<div  th:style="'height: 20px; width: 452px; background:url(/images/arrow-gray.png) repeat-x; margin-right: 250px'" style="height: 20px; width: 452px; background:url(../static/images/arrow-gray.png) repeat-x; margin-right: 250px"></div>
+			<div style="margin-top: 0px;">
+				<form action="/user/register"  th:object="${user2}" method="post" class="register_form" onSubmit="return check()">
+
+					<label for="userName">用户名<font style="color: red">*</font>
+						<input th:field="*{userName}" type="text" id="userName" name="userName" class="register_input" onBlur="checkUsername()" onclick="delmessage()" required>
+					</label>
+					<br>
+					<label for="userPassword">密码<font style="color: red">*</font>
+						<input type="password" th:field="*{userPassword}" id="userPassword" name="userPassword" class="register_input" onBlur="checkPassword()" required>
+					</label>
+					<br>
+					<label for="confirmPassword">确认密码<font style="color: red">*</font>
+						<input type="password" id="confirmPassword" name="confirmPassword" class="register_input" onBlur="checkConfirmPassword()" required>
+					</label>
+					<br>
+					<label for="userGender">性别<font style="color: red; margin-right: 35px;">*</font>
+						<input type="radio" th:field="*{userGender}" name="userGender" style="display: inline-block; width: 50px;" value="男" checked >男
+						<input type="radio"  th:field="*{userGender}" name="userGender" style="display: inline-block; width: 50px;" value="女">女
+					</label>
+					<br>
+					<label for="userPhone">电话号码<font style="color: red">*</font>
+						<input type="tel" th:field="*{userPhone}" id="userPhone" name="userPhone" class="register_input" onBlur="checkPhone()" required>
+					</label>
+					<br>
+					<label for="userIdentity">真实姓名<font style="color: red">*</font>
+						<input type="text" th:field="*{userRealName}" id="userRealName" name="userRealName" class="register_input" onBlur="checkRealName()" required>
+					</label>
+					<br>
+
+					<label for="userIdentity">身份证号<font style="color: red">*</font>
+						<input type="text" th:field="*{userIdentity}" id="userIdentity" name="userIdentity" class="register_input" onBlur="checkIdentity()" required>
+					</label>
+					<br>
+					<label for="userAddress">地址<font style="color: red;margin-right: 55px;">*</font>
+						<select name="province" id="province" class="address_select">
+							<option value="请选择省份">请选择省份</option>
+						</select>
+						<select name="city" id="city" class="address_select">
+							<option value="请选择城市">请选择城市</option>
+						</select>
+					</label>
+					<br>
+					<label for="userEmail">邮箱<font style="color: red">*</font>
+						<input type="email" th:field="*{userEmail}"  id="userEmail" name="userEmail" class="register_input" onBlur="checkEmail()" required>
+					</label>
+					<br>
+					<label for="userQQId">QQ号
+						<input type="text" th:field="*{userQQId}" id="userQQId" name="userQQId" class="register_input" onBlur="checkQQ()">
+					</label>
+					<br>
+					<label for="userWeChatId">微信号
+						<input th:field="*{userWeChatId}" type="text" id="userWeChatId" name="userWeChatId" class="register_input">
+					</label>
+					<br>
+					<input type="checkbox" name="items" id="items" required>我已阅读并同意所有条款
+					<br>
+
+					<input type="submit" value="提交" class="register_button"/>
+					<input type="reset" value="重置" class="register_button"/>
+
+				</form>
+				<div class="spanClass">
+					<span id="usernameSpan" style="color: red" th:text="${message}" th:if="${not #strings.isEmpty(message)}"></span>
+					<br>
+					<span id="pwdSpan"></span>
+					<br>
+					<span id="confirmPwdSpan"></span>
+					<br>
+					<br>
+					<span id="phoneSpan"></span>
+					<br>
+					<span id="realNameSpan"></span>
+					<br>
+					<span id="identitySpan"></span>
+					<br>
+					<span id="addressSpan"></span>
+					<br>
+					<span id="emailSpan"></span>
+					<br>
+					<span id="qqSpan"></span>
+					<br>
+					<span id="wechatSpan"></span>
+					<br>
+					<span id="itemsSpan"></span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div th:replace="_fragments :: footer" class="footer">
+	<div>
+		<div>
+			<h4>24小时客服服务</h4>
+			<ul>
+				<li class="phone-num">
+					512-943-1069 <br> 512-943-1068
+				</li>
+				<li class="email">
+					<a href="#">info@163.com</a>
+				</li>
+				<li class="address">
+					青岛市南区 <br> 漳州二路
+				</li>
+			</ul>
+		</div>
+		<div>
+			<h4>最近推送</h4>
+			<ul>
+				<li>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+					</p>
+					- <span><a href="blog.html">1天前</a></span>
+				</li>
+				<li>
+					<p>
+						Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+					</p>
+					- <span><a href="blog.html">2天前</a></span>
+				</li>
+			</ul>
+		</div>
+		<div class="connect">
+			<h4>联系我们</h4>
+			<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+			<form action="index.html">
+				<h4>通讯注册</h4>
+				<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+				<input type="submit" id="submit" value="">
+			</form>
+		</div>
+	</div>
+	<div>
+		<ul>
+			<li>
+				<a href="index.html">首页</a>
+			</li>
+			<li>
+				<a href="about.html">新闻</a>
+			</li>
+			<li>
+				<a href="programs.html">活动</a>
+			</li>
+			<li>
+				<a href="gallery.html">图库</a>
+			</li>
+			<li>
+				<a href="contact.html">联系我们</a>
+			</li>
+			<li>
+				<a href="blog.html">日志</a>
+			</li>
+		</ul>
+		<p>
+			&#169; 2020 自然有你 rights reserved&nbsp;
+		</p>
+	</div>
+</div>
+<script th:src="@{/js/Province_city.js}" src="../static/js/Province_city.js" defer="defer"></script>
+<script th:src="@{/js/register.js}" src="../static/js/register.js" ></script>
+<script>
+	var message = document.getElementById("usernameSpan");
+	function delmessage() {
+		usernameSpan.innerText="";
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qdu.mapper.ActivityMapper">
+    <resultMap id="ActivityMap" type="Activity">
+        <!--活动信息映射
+            actId	actName	actImg	actStartDate
+            actDeadLine	actRegDate	actRegDeadline	actPlace
+            actNumber	actRequire	actSlogan	actScore
+            actProfile	actIsCheck actIsCancel
+            actStatus	actTag actPromoter
+            users  comments
+        -->
+        <id column="actId" property="actId"></id>
+        <result column="actName" property="actName"></result>
+        <result column="actImg" property="actImg"></result>
+        <result column="actStartDate" property="actStartDate"></result>
+        <result column="actDeadLine" property="actDeadLine"></result>
+        <result column="actRegDate" property="actRegDate"></result>
+        <result column="actRegDeadline" property="actRegDeadline"></result>
+        <result column="actPlace" property="actPlace"></result>
+        <result column="actNumber" property="actNumber"></result>
+        <result column="actRequire" property="actRequire"></result>
+        <result column="actSlogan" property="actSlogan"></result>
+        <result column="actScore" property="actScore"></result>
+        <result column="actProfile" property="actProfile"></result>
+        <result column="actIsCheck" property="actIsCheck"></result>
+        <result column="actIsCancel" property="actIsCancel"></result>
+        <!--
+        userId	userName
+        userPassword	userRealName
+        userGender	userPhone	userIdentity
+        userEmail	userAddress	userQQId
+        userWeChatId	userAvatar
+        -->
+        <association property="actPromoter" javaType="user">
+            <id column="actPromoter" property="userId"/>
+            <result column="userName" property="userName"/>
+            <result column="userPhone" property="userPhone"/>
+        </association>
+        <association property="actTag" javaType="Tag">
+            <id column="actTag" property="tagId"/>
+            <result column="tagName" property="tagName"/>
+        </association>
+        <association property="actStatus" javaType="Status">
+            <id column="actStatus" property="statusId"/>
+            <result column="statusName" property="statusName"/>
+        </association>
+
+<!--        <collection property="comments" ofType="Comment">-->
+<!--            <result property="comId" column="comId"/>-->
+<!--            <result property="comUser" column="comUser"/>-->
+<!--            <result property="comContent" column="comContent"/>-->
+<!--            <result property="comCreateTime" column="comCreateTime"/>-->
+<!--            <result property="comParentComment" column="comParentComment"/>-->
+<!--        </collection>-->
+<!--        <collection property="users" ofType="User">-->
+<!--            <id column="userId" property="userId"/>-->
+<!--            <result property="userName" column="userName"/>-->
+<!--            <result property="userPassword" column="userPassword"/>-->
+<!--            <result property="userRealName" column="userRealName"/>-->
+<!--            <result property="userGender" column="userGender"/>-->
+<!--            <result property="userPhone" column="userPhone"/>-->
+<!--            <result property="userIdentity" column="userIdentity"/>-->
+<!--            <result property="userEmail" column="userEmail"/>-->
+<!--            <result property="userAddress" column="userAddress"/>-->
+<!--            <result property="userQQId" column="userQQId"/>-->
+<!--            <result property="userWeChatId" column="userWeChatId"/>-->
+<!--            <result property="userAvatar" column="userAvatar"/>-->
+<!--        </collection>-->
+
+    </resultMap>
+
+
+
+
+    <select id="queryActivityListByPage" resultMap="ActivityMap">
+       SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        ORDER BY actStartDate DESC
+    </select>
+    <select id="queryActivityById" resultMap="ActivityMap">
+       SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND a.actId = #{actId}
+    </select>
+    <select id="queryActivityListByTagId" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND a.actTag = #{tagId} AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+    </select>
+
+    <select id="queryActivityListByStatusId" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND a.actStatus = #{statusId} AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+    </select>
+
+
+    <select id="queryActivityStartYear" resultType="int">
+        select DISTINCT YEAR(actStartDate)  from activity ORDER BY actStartDate DESC
+    </select>
+
+    <select id="queryActivityListByStartYear" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND YEAR(actStartDate) = #{year} AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+    </select>
+
+
+    <insert id="addActivity" parameterType="Activity" useGeneratedKeys="true" keyColumn="actId" keyProperty="actId">
+
+insert into activity (actName,actImg,	actStartDate,	actDeadLine,	actRegDate,	actRegDeadline,	actPlace,	actNumber,	actRequire,	actSlogan,	actScore,	actProfile,	actStatus,	actTag,	actIsCheck,	actIsCancel,	actPromoter)
+values (#{actName},#{actImg},	#{actStartDate},	#{actDeadLine},	#{actRegDate},	#{actRegDeadline},	#{actPlace},	#{actNumber},	#{actRequire},	#{actSlogan},	#{actScore},	#{actProfile},	#{actStatus.statusId},	#{actTag.tagId},	#{actIsCheck},	#{actIsCancel},	#{actPromoter.userId})
+    </insert>
+
+    <insert id="addActivityUser">
+        INSERT INTO useractivity (actId,userId) VALUES (#{actId},#{userId})
+    </insert>
+
+<select id="queryActivityListByJoinedUser" resultMap="ActivityMap">
+  SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s,useractivity ua
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND ua.actId = a.actId
+				AND ua.userId=#{userId}
+</select>
+
+    <select id="queryActivityListByLaunchedUser" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+				AND a.actPromoter=#{userId}
+    </select>
+
+
+
+    <select id="queryActivityListByTagIdAndJoinedUser" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s ,useractivity ua
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId
+        AND a.actPromoter = u.userId AND a.actTag = #{tagId}
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        AND ua.actId = a.actId AND ua.userId=#{user.userId}
+
+    </select>
+
+    <select id="queryActivityListByStatusIdAndJoinedUser" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s ,useractivity ua
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND a.actStatus = #{statusId} AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+           AND ua.actId = a.actId AND ua.userId=#{user.userId}
+
+    </select>
+
+
+    <select id="queryActivityListByStartYearAndJoinedUser" resultMap="ActivityMap">
+SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s ,useractivity ua
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId AND YEAR(actStartDate) = #{startYear} AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        AND ua.actId = a.actId AND ua.userId=#{user.userId}
+
+    </select>
+    <select id="queryActivityListByTagIdAndLaunchedUser" resultMap="ActivityMap">
+        		 SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel} AND  a.actPromoter=#{user.userId} AND a.actTag = #{tagId}
+    </select>
+
+
+    <select id="queryActivityListByStartYearAndLaunchedUser" resultMap="ActivityMap">
+        		 SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        AND  a.actPromoter=#{user.userId} AND  YEAR(actStartDate) = #{startYear}
+    </select>
+
+
+    <select id="queryActivityListByStatusIdAndLaunchedUser" resultMap="ActivityMap">
+        		 SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        AND  a.actPromoter=#{user.userId} AND a.actStatus = #{statusId}
+    </select>
+    <select id="queryActivityListByCheckAndLaunchedUser" resultMap="ActivityMap">
+        		 SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        AND  a.actPromoter=#{user.userId}
+    </select>
+
+
+    <select id="queryActivityListByTop" resultMap="ActivityMap">
+        		 SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+       ORDER BY a.actStartDate desc
+        limit 0,#{num}
+    </select>
+
+
+<update id="updateActivityIsCancel">
+    update activity set actIsCancel = #{actIsCancel} where actId = #{actId}
+</update>
+<delete id="deteleActivity">
+    delete from activity where actId = #{actId}
+</delete>
+
+    <update id="updateActivityIsCheck">
+    update activity set actIsCheck = #{actIsCheck} where actId = #{actId}
+</update>
+    <select id="queryActivityListBySearch" resultMap="ActivityMap">
+        		 SELECT a.*,u.*,t.*,s.* from activity a,tag t,`user` u,`status` s
+        where
+        a.actStatus = s.statusId AND a.actTag = t.tagId AND a.actPromoter = u.userId
+        AND a.actIsCheck = #{actIsCheck} AND a.actIsCancel = #{actIsCancel}
+        AND  a.actName  LIKE  CONCAT('%',#{activity.actName},'%')
+        and a.actStartDate between #{activity.actStartDate1} and #{activity.actStartDate2}
+        ORDER BY a.actStartDate desc
+
+    </select>
+
+    <insert id="addActivityTeam" parameterType="Team" useGeneratedKeys="true" keyColumn="teamId" keyProperty="teamId">
+
+INSERT INTO team (teamName,teamLeader,teamPlayerInfo,teamNumber,teamAct)
+VALUES(#{teamName},#{teamLeader.userId},#{teamPlayerInfo},#{teamNumber},#{teamAct.actId})
+    </insert>
+    <resultMap id="TeamMap" type="Team">
+        <id column="teamId" property="teamId"></id>
+        <result column="teamName" property="teamName"></result>
+        <result column="teamPlayerInfo" property="teamPlayerInfo"></result>
+        <result column="teamNumber" property="teamNumber"></result>
+        <association property="teamLeader" javaType="user">
+            <id column="teamLeader" property="userId"/>
+        </association>
+        <association property="teamAct" javaType="activity">
+            <id column="teamAct" property="actId"/>
+        </association>
+    </resultMap>
+    <select id="queryTeamListByActivityId" resultMap="TeamMap">
+SELECT * from team t  WHERE teamAct = #{actId}
+    </select>
+    <select id="queryTeamPlayerNumberByActivityId" resultType="Integer">
+        select sum(teamNumber) from team  WHERE teamAct=#{actId} ;
+    </select>
+
+
+</mapper>

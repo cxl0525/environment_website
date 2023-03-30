@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qdu.mapper.PictureMapper">
+
+
+
+    <resultMap id="PictureMap" type="Picture">
+
+        <id column="picId" property="picId"></id>
+        <result column="picImagePath" property="picImagePath"></result>
+        <result column="picClicks" property="picClicks"></result>
+        <result column="picName" property="picName"></result>
+
+        <association property="picType" javaType="Type">
+            <id column="picType" property="typeId"/>
+            <result column="typeName" property="typeName"/>
+        </association>
+        <association property="picUser" javaType="User">
+            <id column="picUser" property="userId"/>
+            <result column="userName" property="userName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryPictureListByPage" resultMap="PictureMap">
+       select p.*,t.*,u.* from environment.picture p,environment.type t,environment.user u where p.picType=t.typeId and p.picUser=u.userId
+    </select>
+
+    <select id="queryPictureListByTypeId" resultMap="PictureMap">
+       select p.*,t.*,u.* from environment.picture p,environment.type t,environment.user u where p.picType=#{TypeId} and p.picUser=u.userId and t.typeId=#{TypeId}
+    </select>
+
+    <select id="queryPictureListByParentTypeId" resultMap="PictureMap">
+       select p.*,t.*,u.* from environment.picture p,environment.type t,environment.user u where p.picType=t.typeId and p.picUser=u.userId and t.typeParent=#{TypeId}
+    </select>
+
+
+    <select id="queryPictureListByUserId" resultMap="PictureMap">
+       select p.*,t.*,u.* from environment.picture p,environment.type t,environment.user u where u.userId=#{UserId} and p.picUser=#{UserId} and p.picType=t.typeId
+    </select>
+
+
+    <select id="queryAllTypeParent" resultType="Type">
+        select * from environment.type where typeParent is null
+    </select>
+
+
+    <resultMap id="TypeMap" type="Type">
+        <id column="typeId" property="typeId"></id>
+        <result column="typeName" property="typeName"></result>
+        <association property="typeParent" javaType="Type">
+            <id column="typeParent" property="typeId"/>
+            <result column="typeName" property="typeName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryAllTypeList" resultMap="TypeMap">
+        select t1.*,t2.* from environment.type t1,environment.type t2 where t1.typeId=t2.typeParent or t2.typeParent is null
+    </select>
+
+    <update id="updatePicClicks">
+    update environment.picture set picClicks=picClicks+1 where picId=#{PicId}
+    </update>
+
+
+    <insert id="addPicture" parameterType="Picture" useGeneratedKeys="true" keyColumn="picId" keyProperty="picId">
+    insert into environment.picture (picClicks,picType,picUser,picImagePath,picName)
+    values(#{picClicks},#{picType.typeId},#{picUser.userId},#{picImagePath},#{picName})
+    </insert>
+
+
+    <select id="queryPictureListByTop" resultType="picture">
+         select * from picture limit 0,#{num}
+    </select>
+
+
+
+
+</mapper>

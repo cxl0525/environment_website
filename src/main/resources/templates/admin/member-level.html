@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <title>自然有你后台管理系统-等级管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    
+
+</head>
+<body>
+    <!-- 顶部开始 -->
+    <div th:replace="admin/_fragments :: nav('自然有你后台管理系统————等级管理')" class="container">
+        <div class="logo"><a href="./admin_index.html">自然有你后台管理系统————等级管理</a></div>
+        <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a href="">个人信息</a></dd>
+              <dd><a href="">切换帐号</a></dd>
+              <dd><a href="admin_login.html">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="/">前台首页</a></li>
+        </ul>
+    </div>
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 左侧菜单开始 -->
+        <div th:replace="admin/_fragments :: left_nav" class="left-nav">
+          <div id="side-nav">
+            <ul id="nav">
+                <li class="list" current>
+                    <a href="admin_index.html">
+                        <i class="iconfont">&#xe761;</i>
+                        欢迎页面
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="member-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="member-del.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户删除
+                            </a>
+                        </li>
+                        <li>
+                            <a href="member-level.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                等级管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="member-kiss.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                积分管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="member-view.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                待审核用户
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        活动管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="activity-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                活动列表
+                            </a>
+                        </li>
+						<li>
+                            <a href="activity-readyPass.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                待审核的活动
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="blog-list.html">
+                        <i class="iconfont">&#xe6a3;</i>
+                        日志管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <!--<ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="banner-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                日志列表
+                            </a>
+                        </li>
+                    </ul>-->
+                </li>
+				<li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        评论管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="comment-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                父评论列表
+                            </a>
+                        </li>
+						<li>
+                            <a href="comment-child-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                子评论列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+				<li class="list" >
+                    <a href="#">
+                        <i class="iconfont">&#xe6a3;</i>
+                        广告管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    
+                </li>
+                <li class="list" >
+                    <a href="#">
+                        <i class="iconfont">&#xe6a3;</i>
+                        管理员管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <!--<ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="banner-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                管理员列表
+                            </a>
+                        </li>
+                    </ul>-->
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        系统统计
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="echarts1.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                拆线图
+                            </a>
+                        </li>
+                        <li>
+                            <a href="echarts2.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                柱状图
+                            </a>
+                        </li>
+                        <li>
+                            <a href="echarts3.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                地图
+                            </a>
+                        </li>
+                        <li>
+                            <a href="echarts4.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                饼图
+                            </a>
+                        </li>
+                        <li>
+                            <a href="echarts5.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                k线图
+                            </a>
+                        </li>
+                        <li>
+                            <a href="echarts6.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                仪表图
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://echarts.baidu.com/examples.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                更多案例
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="#">
+                        <i class="iconfont">&#xe6a3;</i>
+                        系统设置
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    
+                </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+  
+            <xblock><button class="layui-btn layui-btn-danger" ><i class="layui-icon">&#xe640;</i>批量删除</button>
+                <button class="layui-btn" onclick="level_add('添加等级','level-add.html','','600','300')"
+                        th:onclick="level_add('添加等级',[[@{/admin/toAddRate}]],'','600','500')">
+                    <i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px" th:text="'共有数据：'+${pageInfo.total}">共有数据：88 条</span></xblock>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            
+                        </th>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            等级名
+                        </th>
+                        <th>
+                            积分范围
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="rate : ${pageInfo.list}">
+                        <td>
+                            <input type="checkbox" value="1" name="">
+                        </td>
+                        <td>
+                            <span th:text="${rate.rateId}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${rate.rateName}"></span>
+                        </td>
+                        <td >
+                            <span th:text="${rate.rateMinScore} + '-' + ${rate.rateMaxScore}"></span>
+                        </td>
+                        <td class="td-manage">
+                            <a title="编辑" href="javascript:;" onclick="level_edit('编辑','level-edit.html','4','','300')"
+                               th:onclick="level_edit('编辑',[[@{/admin/toUpdateRate/{rateId}(rateId=${rate.rateId})}]],[[${rate.rateId}]],'','300')"
+                            style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            <a title="删除" href="javascript:;" th:onclick="level_del(this,[[${rate.rateId}]])"
+                               onclick="level_del(this,'1')"
+                            style="text-decoration:none">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+              <br>
+              <div class="page_number_div">
+				<span class="pageinfo">
+					共<label id="total" th:text="${pageInfo.total}"></label>条/
+					<label th:text="${pageInfo.pages}" style="color: red"></label>页
+				</span>
+
+                  <a th:href="@{${pageRequest}(pageNum=${1})}">首页</a>
+                  <a th:if="${pageInfo.pageNum>1}" th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum - 1})}">上一页</a>
+
+                  <b th:each="nav:${pageInfo.navigatepageNums}">
+                      <a th:href="@{${pageRequest}(pageNum=${nav})}" class="page_number" th:text="${nav}"
+                         th:if="${nav != pageInfo.pageNum}"></a>
+                      <a href="#" class="page_number_live" th:if="${nav == pageInfo.pageNum}" th:text="${nav}"></a>
+                  </b>
+
+                  <a th:if="${pageInfo.pageNum<pageInfo.pages}"
+                     th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum + 1})}"> 下一页</a>
+                  <a th:href="@{${pageRequest}(pageNum=${pageInfo.pages})}">尾页</a>
+              </div>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+    <!-- 底部开始 -->
+    <div class="footer">
+        <div class="copyright">Copyright ©2020 自然有你 All Rights Reserved.</div>  
+    </div>
+    <!-- 底部结束 -->
+    <!-- 背景切换开始 -->
+    <div th:replace="admin/_fragments :: bg_changer" class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" src="../../static/images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="../../static/images/k.jpg" alt=""></div>
+                <div class="swiper-slide"><span class="reset">初始化</span></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
+    </div>
+    <!-- 背景切换结束 -->
+    <!-- 页面动态效果 -->
+    <script>
+
+        
+            // 等级-增加
+            function level_add (title,url,id,w,h) {
+                x_admin_show(title,url,w,h); 
+            }
+            // 等级-编辑
+            function level_edit (title,url,id,w,h) {
+                x_admin_show(title,url,w,h); 
+            }
+           
+            /*等级-删除*/
+            function level_del(obj,id){
+                layer.confirm('确认要删除吗？',function(index){
+                    //发异步删除数据
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/delRate",
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "rateId": id
+                        }),
+                        success: function (result) {
+                            console.log(result);
+                        },
+                        error: function (result) {
+                            alert("错误")
+                        }
+                    })
+                    $(obj).parents("tr").remove();
+                    layer.msg('已删除!',{icon:1,time:1000});
+                });
+            }
+        </script>
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script th:src="@{/lib/layui/layui.js}" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}" src="../../static/js/xadmin.js"></script>
+    <!--/*/</th:block>/*/-->
+</body>
+</html>

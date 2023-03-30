@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>发布活动</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"  href="../static/css/style.css" type="text/css">
+	
+	
+</head>
+	
+<body>
+	<div th:replace="_fragments :: menu(3)" class="header">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索"/>
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="#">互动</a>
+					</li>
+					<li>
+						<a href="#">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="contact" style="padding-right: 0px;">
+			<div>
+				
+				<div style="margin-top: 85px; margin-right: 0px; margin-left: 100px; background-image: url(../static/images/bg-body.jpg); border:none;">
+					<img  th:src="@{/images/blog-post2.jpg}" src="../static/images/blog-post2.jpg" alt="海报" style="border-radius: 50%;" id="actImgCircle"/>
+					
+				</div>
+			</div>
+			<div>
+				<h2>发布活动</h2>
+				
+			  <div style="height: 20px; width: 532px; background:url(../static/images/arrow-gray.png) repeat-x; margin-right: 170px"></div>
+			  <div style="margin-top: 0px;">
+				<form  th:action="@{/launchActivity}"  action="index.html" enctype="multipart/form-data"  method="post" class="launch_form" onSubmit="return checkAll()">
+				  	
+					<div class="launch_input">
+					<label for="actName">活动名称<font style="color: red">*</font>
+						<input type="text" id="actName" name="actName" class="register_input" onBlur="checkActName()" required>
+					</label>
+					<br>
+				  <label for="actTag">活动类别<font style="color: red;margin-right: 50px;">*</font>
+						<select name="actTag" id="actTag" class="category_class" onBlur="checkActTag()">
+							<option value="请选择类别">请选择类别</option>
+							<option th:each="tag:${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}" value="植树防沙">植树防沙</option>
+<!--							<option value="海洋保护">海洋保护</option>-->
+<!--							<option value="垃圾分类">垃圾分类</option>-->
+<!--							<option value="清洁水源">清洁水源</option>-->
+<!--							<option value="动物保护">动物保护</option>-->
+<!--							<option value="培训讲座">培训讲座</option>-->
+						</select>
+					</label>
+					<br>
+				  <label for="actStartDate">活动开始时间<font style="color: red;margin-right: 15px;">*</font>
+						<input type="date" id="actStartDate" name="actStartDate" class="address_select" onChange="checkActStartDate()" required>
+					  	<input type="time" id="actStartTime" name="actStartTime"
+							   class="address_select" onChange="checkActStartTime()" required>
+					</label>
+					<br>
+				  <label for="actDeadLine">活动结束时间<font style="color: red; margin-right: 15px;">*</font>
+						<input type="date" id="actDeadLine" name="actDeadLine" class="address_select" onChange="checkActDeadLine()" required>
+					  	<input type="time" id="actDeadLineTime" name="actDeadLineTime"
+							   class="address_select" required>
+					</label>
+					<br>
+				  <label for="actRegDate">报名开始时间<font style="color: red; margin-right: 15px;">*</font>
+						<input type="date" id="actRegDate" name="actRegDate" class="address_select" onChange="checkActRegDate()" required>
+					  	<input type="time" id="actRegTime" name="actRegTime"
+							   class="address_select" required>
+					</label>
+					<br>
+				  <label for="actRegDeadline">报名截止时间<font style="color: red; margin-right: 15px;">*</font>
+						<input  type="date" id="actRegDeadline" name="actRegDeadline" class="address_select" onChange="checkActRegDeadline()" required>
+					  	<input type="time" id="actRegDeadlineTime" name="actRegDeadlineTime"
+							   class="address_select" required>
+					</label>
+					<br>
+				  <label for="actPlace">地点<font style="color: red;margin-right: 80px;">*</font>
+						<select name="province" id="province" class="address_select" onBlur="checkActPlace()">
+    						<option value="请选择省份">请选择省份</option>
+						</select>
+							<select name="city" id="city" class="address_select">
+								<option value="请选择城市">请选择城市</option>
+							</select>
+					</label>
+					<br>
+					
+					<label for="actNumber">上限人数
+						<input type="number" id="actNumber" name="actNumber" class="register_input" placeholder="不填视为人数无上限">
+					</label>
+					<br>
+					
+					<label for="actSlogan">宣传口号<font style="color: red">*</font>
+						<input type="text" id="actSlogan" name="actSlogan" class="register_input" placeholder="限16个字" required onKeyUp="checkActSlogan()">
+					</label>
+					<br>
+						
+						<label for="actImg">活动图片<font style="color: red">*</font>
+						<input type="file" id="actImg" name="actImg" class="register_input"  required>
+					</label>
+					<br>
+					</div>
+					
+					<div class="activity_spanDiv">
+						<span id="actNameSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actTagSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actStartDateSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actDeadLineSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actRegDateSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actRegDeadlineSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actPlaceSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actNumberSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actSloganSpan" class="activity_spanClass"></span>
+						<br>
+						<span id="actImgSpan" class="activity_spanClass"></span>
+					</div>
+					
+					
+					<label for="actProfile">活动简介
+						<textarea id="actProfile" name="actProfile" class="launch_area"
+								  cols="30" rows="10" ></textarea>
+					</label>
+					
+					<br>
+					<br>
+					<br>
+					<input type="submit" value="提交" class="register_button"/>
+					<input type="reset" value="重置" class="register_button"/>
+				
+				</form>
+					
+				</div>
+				
+			</div>
+		</div>
+		</div>
+		
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+	
+	<script  th:src="@{/js/Province_city.js}" src="../static/js/Province_city.js" defer="defer"></script>
+	<script th:src="@{/js/launch_activity_js.js}"  src="../static/js/launch_activity_js.js"></script>
+</body>
+</html>

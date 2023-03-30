@@ -1,0 +1,173 @@
+<!doctype html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>个人信息修改</title>
+	<link type="text/css"   th:href="@{/css/style.css}" rel="stylesheet" href="../static/css/style.css"/>
+
+	<style>
+		body{
+			background-image:url(/images/green_bg.jpg);
+			background-repeat:no-repeat;
+			background-size:100% auto;
+			background-position:inherit;
+			}
+	</style>
+</head>
+
+<body>
+<div class="personal_left">
+	<a th:href="@{/person}" href="personal.html"><div class="userTo_Personal">
+		个人界面☜
+
+	</div></a>
+	<button class="update_pwd" onClick="showUpdatePwdDiv()">修改密码</button>
+	<br>
+	<div class="userAvatarDiv">
+		
+		<img th:src="${user.userAvatar}" src="../static/images/avatar2.jpg" alt="" class="user_avatar" onClick="showLaunchImageDiv()">
+		<br>
+		点击头像更换
+	</div>
+	<div class="userTo_info">
+		<form th:action="@{/user/update}"  method="post" th:object="${user}">
+					<label for="userName">用户名
+						<input  type="text" id="userName" name="userName"  th:field="*{userName}" class="register_input" value="用户名1234" required>
+						<span id="usernameSpan" style="color: red" th:text="${message}" th:if="${not #strings.isEmpty(message)}"></span>
+
+					</label>
+					<br>
+			<label for="userGender"><font style="margin-right: 40px;">性别</font>
+						<input type="radio" th:field="*{userGender}"  name="userGender" style="display: inline-block; width: 50px;" value="男" checked >男
+						<input type="radio"  th:field="*{userGender}"  name="userGender" style="display: inline-block; width: 50px;" value="女">女
+					</label>
+					<br>
+					<label for="userPhone">电话号码
+						<input type="tel" th:field="*{userPhone}"  id="userPhone" name="userPhone" class="register_input" value="123456780"  onblur="checkPhone()" required>
+					</label>
+					<br>
+					
+					<label for="userIdentity">身份证号
+						<input th:field="*{userIdentity}" type="text" id="userIdentity" name="userIdentity" class="register_input" value="23456732453426467" onblur="checkIdentity()" required>
+					</label>
+					<br>
+			<label for="userAddress"><font style="margin-right: 50px;">地址</font>
+						<select name="province" id="province" class="address_select"  required>
+    						<option value="山东" selected="selected">山东</option>
+						</select>
+							<select name="city" id="city" class="address_select" required>
+								<option value="青岛" selected="selected">青岛</option>
+							</select>
+					</label>
+					<br>
+					<label for="userEmail">邮箱
+						<input type="email"  th:field="*{userEmail}" id="userEmail" name="userEmail" class="register_input" value="134253465@163.com" onblur="checkEmail()" required>
+					</label>
+					<br>
+					<label for="userQQId">QQ号
+						<input type="text"  th:field="*{userQQId}"id="userQQId" name="userQQId" class="register_input" value="暂未绑定" onblur="checkQQ()">
+					</label>
+					<br>
+					<label for="userWeChatId">微信号
+						<input type="text" th:field="*{userWeChatId}" id="userWeChatId" name="userWeChatId" class="register_input" value="暂未绑定">
+					</label>
+					<input type="submit" value="保存"  class="submit_button" onClick="return checkAll()"/>
+		</form>
+		<div class="span_class">
+			<span ></span>
+			<br>
+
+			<br>
+			<span id="phoneSpan"></span>
+			<br>
+			<span id="identitySpan"></span>
+			<br>
+			<span id="addressSpan"></span>
+			<br>
+			<span id="emailSpan"></span>
+			<br>
+			<span id="qqSpan"></span>
+			<br>
+			<span id="wechatSpan"></span>
+
+		</div>
+	</div>
+	<div id="launch_image_div" class="launch_image_div" style="display:none;">
+				<div class="top_div"><span>上传头像</span><button class="cancel_button" onClick="closeLaunchImageDiv()">x</button></div>
+				<br>
+				<form method="post" th:action="@{/user/updateAvatar}" enctype="multipart/form-data" >
+					
+					选择图片：<input type="file" class="image_input" name="picImagePath" id="picImagePath" required/><br>
+					
+					<input type="submit" value="确定" class="submit_button" />
+				</form>
+				<br>
+				
+			</div>
+			<div id="launch_image_bg" class="launch_image_bg" style="display:none;"></div>
+	
+	
+	<div id="update_pwd_div" class="update_pwd_div" style="display:none;">
+				<div class="top_div"><span>修改密码</span><button class="cancel_button" onClick="closeUpdatePwdDiv()">x</button></div>
+				<br>
+				<form method="post" th:action="@{/user/updatePwd}">
+					
+					<input type="password" placeholder="请输入旧密码" class="password_input" required>
+					<br>
+					<input type="password" name="userPassword" placeholder="请输入新密码" class="password_input" id="newPwd" required>
+					<br>
+					<input type="password" placeholder="请再次确认新密码" class="password_input" id="newPwdAgain" onKeyUp="isSamePwd()" required>
+					<br>
+					<span id="pwd_info" style="color: red; font-size: 15px;" ></span>
+					<br>
+					<input type="submit" value="确定" class="submit_button" onClick="return checkPwd()"/>
+				</form>
+				<br>
+				
+			</div>
+			<div id="update_pwd_bg" class="update_pwd_bg" style="display:none;"></div>
+</div>
+	<script th:src="@{/js/Province_city.js}" src="../static/js/Province_city.js"></script>
+	<script th:src="@{/js/gallery.js}" src="../static/js/gallery.js"></script>
+	<script src="../static/js/update_information.js"></script>
+
+<script>
+	function showLaunchImageDiv(){
+
+		document.getElementById('launch_image_div').style.display='block';
+
+		document.getElementById('launch_image_bg').style.display='block';
+
+	}
+
+
+
+	function closeLaunchImageDiv(){
+
+		document.getElementById('launch_image_div').style.display='none';
+
+		document.getElementById('launch_image_bg').style.display='none';
+
+	}
+
+
+	function showUpdatePwdDiv(){
+
+		document.getElementById('update_pwd_div').style.display='block';
+
+		document.getElementById('update_pwd_bg').style.display='block';
+
+	}
+
+
+
+	function closeUpdatePwdDiv(){
+
+		document.getElementById('update_pwd_div').style.display='none';
+
+		document.getElementById('update_pwd_bg').style.display='none';
+
+	}
+</script>
+</body>
+</html>

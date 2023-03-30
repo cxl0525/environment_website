@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qdu.mapper.RateMapper">
+    <select id="queryRateList" resultType="Rate">
+    select * from environment.rate
+</select>
+
+    <delete id="delRateById" parameterType="int">
+    delete from environment.rate where rateId = #{rateId}
+</delete>
+
+    <select id="queryRateById" resultType="Rate">
+    select * from environment.rate where rateId=#{rateId}
+</select>
+
+    <update id="updateRate" parameterType="Rate">
+    update environment.rate set rateName=#{rateName},rateMinScore=#{rateMinScore},rateMaxScore=#{rateMaxScore} where rateId=#{rateId}
+</update>
+
+    <insert id="addRate" parameterType="Rate">
+    insert into environment.rate (rateName,rateMinScore,rateMaxScore) values(#{rateName},#{rateMinScore},#{rateMaxScore})
+</insert>
+
+</mapper>

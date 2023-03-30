@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>自然有你后台管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" href="/favicon.ico"  type="image/x-icon" />
+    <link rel="stylesheet" th:href="@{/css/font.css}" href="../../static/css/font.css">
+	<link rel="stylesheet" th:href="@{/css/xadmin.css}" href="../../static/css/xadmin.css">
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content" >
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" style=" overflow: auto;">
+				<div class="layui-form-item">
+                    <label for="L_username" class="layui-form-label">
+                        <span class="x-red">*</span>昵称
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userName}">用户名123</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label for="L_realname" class="layui-form-label">
+                        <span class="x-red">*</span>真实姓名
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userRealName}">XXX</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label for="L_sex" class="layui-form-label">
+                        <span class="x-red">*</span>性别
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userGender}">男</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>密码
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userPassword}">123456</span>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        
+                    </div>
+                </div>
+				
+                <div class="layui-form-item">
+                    <label for="L_email" class="layui-form-label">
+                        <span class="x-red">*</span>邮箱
+                    </label>
+                    <div class="layui-input-inline">
+                        
+						<span class="layui-input">2535244726@qq.com</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label for="L_phone" class="layui-form-label">
+                        <span class="x-red">*</span>手机号
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userPhone}">15610469056</span>
+                    </div>
+                </div>
+				
+				<div class="layui-form-item">
+                    <label for="L_indentityID" class="layui-form-label">
+                        <span class="x-red">*</span>身份证号
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userIdentity}">1234353655555555</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label for="L_address" class="layui-form-label">
+                        <span class="x-red">*</span>地址
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userAddress}">山东 青岛</span>
+                    </div>
+                </div>
+				
+				<div class="layui-form-item">
+                    <label for="L_qq" class="layui-form-label">
+                        <span class="x-red">*</span>QQ号
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userQQId}!=null? ${user.userQQId}:'暂未绑定'">暂未绑定</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label for="L_wechat" class="layui-form-label">
+                        <span class="x-red">*</span>微信号
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${user.userWeChatId}!=null?${user.userWeChatId}:'暂未绑定'">暂未绑定</span>
+                    </div>
+                </div>
+                
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+
+
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script th:src="@{/lib/layui/layui.js}" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}" src="../../static/js/xadmin.js"></script>
+    <!--/*/</th:block>/*/-->
+</body>
+</html>

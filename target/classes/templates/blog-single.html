@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>新闻详情</title>
+	<link rel="stylesheet" href="../../static/lib/editormd/css/editormd.css" th:href="@{/lib/editormd/css/editormd.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+</head>
+<body>
+	<div th:replace="_fragments :: menu(2)" class="header">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索">
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="#">互动</a>
+					</li>
+					<li>
+						<a href="#">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="blog-single">
+			<div class="blog_detail">
+				<h2 th:text="${news.newsTitle}">杨柳漫天飞絮太烦人了，当初为啥要播种？</h2>
+				<h5>来自:&nbsp;
+					<span th:text="${news.newsPublisher.userName}" >作者12138</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					发布时间：&nbsp;<span th:text="${#dates.format(news.newsReleaseDate,'yyyy-MM-dd HH:mm:ss')}">2020-5-13</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					阅读量：&nbsp;<span th:text="${news.newsClicks}">2356</span>
+				</h5>
+				<div class="blog_single_line"></div>
+				<div class="blog_content">
+				<p th:text="${news.newsContent}">离开江南二十多年，很多事情记得已经不是很真切了，也淡忘了江南柳絮飞舞的情景。在北京柳絮是遭人厌烦的，每年的晚春，帝都的柳絮如曹雪芹在《红楼梦》描绘的大雪，飞棉扯絮一般漫天飞舞，不住飘到眼睛里，说话间就会有柳絮乘机钻进嘴里。周末找个雅致的露天餐厅享受闲暇，柳絮也不时来捣乱，尽管不停的赶，稍不留神就飘进菜里、碗里，令人防不胜防。柳絮几乎是无孔不入，门窗关得再紧，屋内总能找到一团一团的柳絮，扫把一扫就飞了起来，很难收拾干净。落到地上的柳絮到是有些趣味，自动呼朋唤友在墙角、街沿打转像雪球一样很快滚成一大团，聚成堆，连绵起来很长有些壮观。落到草地上的柳絮飞不动了，就地铺在草地上，远看像覆盖了厚厚的雪，白雪中探出绿草，仿佛下了一场春雪，却没有丝毫的凉意，着实有些个浪漫。影楼发现了商机，给青年的男女拍婚纱，当成一道风景。</p>
+　　				
+					<div class="img_div">
+						<img  th:src="@{${news.newsImagePath}}" src="../static/images/landscape2.jpg" alt=""/>
+					</div>
+<!--				<p>-->
+<!--　　				仔细看白白的柳絮中有黑色的小点，大概是柳树的种子。小学时有篇文章叫《植物妈妈有办法》，植物尽管不能动，但也希望种子尽量去到更远的地方，让子孙后代更加繁盛，为此，植物各有各的好招。小时候很喜欢玩蒲公英，那时地里开满了蒲公英，小孩子们争相去找成熟的蒲公英，摘下来了对着嘴用力一吹，一团蒲公英霎时被吹散，像一朵朵白色的小伞四处飞去，悄无声息落到远处。小伙伴们玩得很尽兴，后来干脆不摘了，弯下腰直接对着花吹，那些未曾老透的蒲公英，一下还吹不干净，得用力吹几下才能吹出去。有时来了一阵风，蒲公英的小伞能飞到好远好远，一朵小伞就是一个种子，飞到尽量远的地方生根发芽。其实柳絮和蒲公英的原理一样，将种子包在柳絮中，柳絮越是轻盈飞得越远，也越是无孔不入，不放过一丝一毫生存的机会。</p>-->
+<!--					<div class="img_div">-->
+<!--						<img src="../static/images/landscape3.jpg" alt=""/>-->
+<!--					</div>-->
+				</div>
+			</div>
+			<div class="sidebar">
+				<div>
+					<h4>活动类别分类</h4>
+					<ul>
+						<li th:each="tag:${tags}" style="display: inline-block; width: 60px;margin: 4px 1px" >
+							<a  th:href="@{/newsByTag/{tagId}(tagId=${tag.tagId})}" href="activity.html" th:text="${tag.tagName}">植树防沙</a>
+						</li>
+						
+					</ul>
+				</div>
+				
+				<div>
+					<h4>时间分类</h4>
+					<ul>
+						<li th:each="month: ${#numbers.sequence(1, thisMonth)}" style="display: inline-block;  width: 60px;margin: 4px 1px" >
+							<a  th:href="@{/newsByYearAndMonth/{releaseYear}/{releaseMonth}(releaseYear=${thisYear},releaseMonth = ${month})}" href="blog.html" th:text="${thisYear}+'.'+${month}">2020</a>
+						</li>
+
+
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+	<script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+</body>
+</html>

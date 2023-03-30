@@ -1,0 +1,53 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>个人界面</title>
+<link type="text/css"   th:href="@{/css/style.css}" rel="stylesheet" href="../static/css/style.css"/>
+	<style>
+		body{
+			background-image:url(/images/green_bg.jpg);
+			background-repeat:no-repeat;
+			background-size:100% auto;
+			background-position:inherit;
+			}
+	</style>
+</head>
+
+<body>
+<div class="personal_right">
+	<a th:href="@{/index}"  href="index.html"><div class="userTo_Home">
+		首页☜
+	</div></a>
+	<br>
+	<div class="userTo_name">
+		<img  th:src="@{${{session.loginUser.userAvatar}}}" src="../static/images/avatar2.jpg" alt="" class="user_avatar">
+		<div class="userName"  >
+			<a th:href="@{/user/personal/update}" th:text="|用户名 ${session.loginUser.userName}|"  href="update_information.html">用户名12138</a>
+		</div>
+	</div>
+	<div class="userTo_info" >
+		所在城市: <span th:text="${session.loginUser.userAddress}">山东 青岛</span><br/><br/>
+		个人等级: <span th:text="${session.loginUser.userRate.rateName}">10</span><br/><br/>
+		
+	</div>
+	<div class="userTo_to">
+		<a th:href="@{/toActivityJoined}"    href="activity_joined.html"><div class="user_link">
+			我参与的活动
+		</div></a>
+		<a th:href="@{/toActivityLaunched}"  href="activity_launched.html"><div class="user_link">
+			我发起的活动
+		</div></a>
+		<a th:href="@{/toLaunchActivity}"  href="launch_activity.html"><div class="user_link">
+			发起活动
+		</div></a>
+		<a th:href="@{/toLaunchBlog}" href="launch_blog.html"><div class="user_link">
+			发表日志
+		</div></a>
+		<a th:href="@{/toBlogLaunched}" href="blog_launched.html"><div class="user_link">
+			我的日志
+		</div></a>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+<meta charset="utf-8">
+<title>活动详情</title>
+	<link rel="stylesheet"  th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+	
+</head>
+
+<body>
+	<div th:replace="_fragments :: menu(3)" class="header">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索">
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="#">互动</a>
+					</li>
+					<li>
+						<a href="#">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div id="activitydetail"  th:fragment="actdetail" class="programs" >
+			<h2>活动名称</h2>
+			<div class="activity_recom_div">
+				<div class="activity_img">
+					<img th:src="@{${activity.actImg}}" src="../static/images/gallery-photo4.jpg"/>
+				</div>
+				<div  class="activity_recom">
+
+					<img th:src="@{/images/time_green.JPG}" src="../static/images/time_green.JPG"><span th:text="${#dates.format(activity.actStartDate,'yyyy-MM-dd HH:mm:ss')}+'~'+${#dates.format(activity.actDeadLine,'yyyy-MM-dd HH:mm:ss')}+'进行'">2020/5/17 8:00 ~ 2020/6/15 22:00 进行</span>
+					<br>
+					<img th:src="@{/images/sign.JPG}" src="../static/images/sign.JPG"><span th:text="${#dates.format(activity.actRegDate,'yyyy-MM-dd HH:mm:ss')}+'~'+${#dates.format(activity.actRegDeadline,'yyyy-MM-dd HH:mm:ss')}+'报名'">2020/5/10 8:00 ~ 2020/5/13 22:00 报名</span>
+					<br>
+					<img th:src="@{/images/organizer.JPG}" src="../static/images/organizer.JPG"><span th:text="'发起人:'+${activity.actPromoter.userName}">发起人</span>
+					<br>
+					<img th:src="@{/images/location_green.JPG}" src="../static/images/location_green.JPG"><span th:text="${activity.actPlace}">青岛</span>
+					<br>
+					<img th:src="@{/images/people_number.JPG}" src="../static/images/people_number.JPG"><span id="actNumber"  th:text="${activity.actNumber}">人数不限</span><span>(已报名</span>
+					<span id="actRegNumber" th:text="${activity.actRegNumber}">35</span>
+					<span>人)</span>
+					<br>
+					<img th:src="@{/images/category.JPG}" src="../static/images/category.JPG">
+					<button  th:onclick="window.open([[@{/activityByTag/{tagId}(tagId=${activity.actTag.tagId})}]])" class="category_button"  th:text="${activity.actTag.tagName}">植树防沙</button>
+<!--					<button class="category_button" th:text="${activity.actTag.tagName}">植树防沙</button>-->
+					<span th:text="${activity.actStatus.statusName}" class="state_class">招募中</span>
+					<hr style="height:1.5px;border:none;border-top:1.5px solid #555555; opacity: 0.3; color: grey"  >
+					<p>宣传口号:<span th:text="${activity.actSlogan}"></span></p>
+					<button class="sign_button" th:onclick="regPerson([[${activity.actId}]])">个人参与</button>
+					<button class="sign_button"  th:onclick="showTeamDiv()" onClick="showTeamDiv()">团队报名</button>
+					<button class="sign_button"    th:if="${not #strings.isEmpty(message)}" th:text="${message}" disabled></button>
+					
+				</div>
+
+			</div>
+
+			<div class="activity_detail">
+				<h3>活动介绍</h3>
+				<div class="line_div"></div>
+				<div class="content_div">
+					<p th:text="${activity.actProfile}">低碳生活，是指社会生活的各项活动所耗用能量要减少，从而减低碳，特别是二氧化碳的排放。对于幼儿来说，是一种态度，一种理念，我们应该积极提倡并实践低碳生活，注意节水、节电、节油、节气，从点滴做起。为了开阔幼儿的新视野，了解低碳知识，强化低碳与生态技术意识，提高对可持续发展重要性的认识，开展以"环保低碳，节能减排，绿色生活，健康成长"主题教育活动，旨在让幼儿从小树立起国家主人翁的意识，用最新的发展和消费理念来指导自己的行为，参与幼儿园的资、能源管理，牵手家长，影响所在社区，用实际行为为我国节能减排计划做出自己的贡献。</p>
+					<img th:src="@{${activity.actImg}}"  src="../static/images/earth-appreciation.jpg"/>
+					
+				</div>
+			</div>
+			<div id="comment-container" th:fragment="commentList" >
+				<div  class="activity_comment">
+					<span>全部评论</span>&nbsp;<font  style="color: red">( [[${comments.size()}]] )</font>
+					<button class="activity_comment_button" onClick="showDiv()">发表评论</button>
+					<div class="line_div"></div>
+					<div class="content_div">
+						<div   th:if="${commentStat.count <=3}"   th:each="comment, commentStat: ${comments}" class="activity_comment_list_div">
+							<div class="user_avatar">
+								<img th:src="@{${comment.comUser.userAvatar}}" src="../static/images/gallery-photo-detail.jpg"/>
+							</div>
+							<div class="user_comment">
+								<span th:text="${comment.comUser.userName}">用户12345679</span>
+								<br>
+								<span    th:text="${#dates.format(comment.comCreateTime,'yyyy-MM-dd HH:mm:ss')}" >2020-1-21</span>
+								<p th:text="${comment.comContent}">哈哈哈哈哈哈哈哈哈哈</p>
+							</div>
+							<hr style="height:1.5px;border:none;border-top:1.5px solid #555555; opacity: 0.3; color: grey"  >
+						</div>
+
+						<button th:if="${comments.size()>3}" class="extension_button" id="extension_button" onClick="extension()">展开</button>
+						<br>
+						<div id="extension_div" style="display: none">
+							<div th:if="${commentStat.count >3}"   th:each="comment, commentStat: ${comments}"  class="activity_comment_list_div">
+								<div class="user_avatar">
+									<img th:src="@{${comment.comUser.userAvatar}}" src="../static/images/gallery-photo-detail.jpg"/>
+								</div>
+								<div class="user_comment">
+									<span th:text="${comment.comUser.userName}">用户12345679</span>
+									<br>
+									<span th:text="${#dates.format(comment.comCreateTime,'yyyy-MM-dd HH:mm:ss')}" >2020-1-21</span>
+									<p th:text="${comment.comContent}">哈哈哈哈哈哈哈哈哈哈</p>
+								</div>
+								<hr style="height:1.5px;border:none;border-top:1.5px solid #555555; opacity: 0.3; color: grey"  >
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				<div id="popDiv" class="launch_comment_div" style="display:none;">
+					<div class="top_div"><button class="cancel_button" onClick="closeDiv()">x</button></div>
+					<br>
+					<textarea id="activity_comment"  class="comment_textarea" placeholder="说点什么吧！"></textarea>
+					<br>
+					<!--			  th:onclick="submitComment([[${activity.actId}]])"-->
+					<button class="submit_button" th:onclick="submitComment([[${activity.actId}]])"  onClick="submitComment()">发表评论</button>
+				</div>
+				<div id="bg" class="bg" style="display:none;"></div>
+			<div id="team_popDiv" class="team_join_div" style="display:none;">
+				<div class="top_div"><button class="cancel_button" onClick="closeTeamDiv()">x</button></div>
+				<form>
+					<br>
+					<input type="number"  id="teamNum" placeholder="请填入团队报名的人数" class="number_input">
+					<br>
+					<button class="submit_button"  th:onclick="submitTeamJoin([[${activity.actId}]])" onClick="submitTeamJoin()">提交</button>
+
+				</form>
+			</div>
+			<div id="team_bg" class="team_bg" style="display:none;"></div>
+
+		</div>
+
+	</div>
+
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+	<script  th:src="@{/js/activity_detail_js.js}"  src="../static/js/activity_detail_js.js"></script>
+
+	<script th:inline="javascript">
+
+		function showDiv(){
+
+				document.getElementById('popDiv').style.display='block';
+
+				document.getElementById('bg').style.display='block';
+
+
+		}
+		function closeDiv(){
+			if(document.getElementById('popDiv')&&document.getElementById('bg')) {
+
+				document.getElementById('popDiv').style.display = 'none';
+
+				document.getElementById('bg').style.display = 'none';
+			}
+
+		}
+		function commitComment(actId, comContent, parentId) {//提交评论
+			// alert("actId--"+actId+"类型"+typeof actId)
+			// alert("parentId--"+parentId+"类型"+typeof parentId)
+			$.ajax({
+				type: "POST",
+				url: "/activityComment",
+				contentType: 'application/json',
+				data: JSON.stringify({
+					"comActivity": {"actId": actId},
+					"comContent": comContent,
+					"comParentComment": {"comId": parentId},
+
+				}),
+				success: function (ret) {
+					console.log(ret);
+
+					if(ret.code == 2120){
+						//刷新页面
+						window.location.reload();
+					}else{
+						if(ret.code == 5000){
+							var login = confirm(ret.message);
+							if(login){
+								//确定登录
+								window.open("http://localhost:8080/login");
+								//来记录关闭该open打开的窗口
+								window.localStorage.setItem("toclose",true);
+							}
+						}else{
+							alert(ret.code+ret.message);
+						}
+					}
+				},
+				dataType:"json"
+			});
+		}
+		function postData(actId, comContent, parentId) {
+			$("#comment-container").load(/*[[@{/activityComment}]]*/"",{
+				"comActivity.actId": actId,
+				"comContent": comContent,
+				"comParentComment.comId": parentId,
+			},function (responseTxt, statusTxt, xhr) {
+//        $(window).scrollTo($('#comment-container'),500);
+				clearContent();//不生效
+
+			});
+
+		}
+
+		function clearContent() {
+			$("[id='activity_comment']").val('');
+
+		}
+		function submitComment(actId){
+
+			document.getElementById('popDiv').style.display='none';
+
+			document.getElementById('bg').style.display='none';
+
+			var comContent=document.getElementById("activity_comment").value;
+
+			//alert(comContent);
+			if(comContent==""||null){
+				alert("评论内容不能为空！")
+			}else {//ajax提交信息（敏感字处理）
+				//commitComment(parseInt(actId), comContent, null); ///刷新不成功  废了
+				postData(parseInt(actId), comContent, 0)
+
+			}
+
+		}
+
+		function regPerson(actId) {//提交个人报名
+
+			var actNumber =  parseInt($('#actNumber').text())
+
+			var actRegNumber =  parseInt($('#actRegNumber').text())
+			if(actRegNumber<actNumber){//可以报名
+				// $("#activitydetail").load(/*[[@{/activityReg}]]*/"",{
+				// 	"actId": actId
+				// },function (responseTxt, statusTxt, xhr) {
+				// 	if(statusTxt=="success"){
+				// 		alert(responseTxt);
+				// 	}
+				// });
+
+
+				$.ajax({
+					type: "POST",
+					url: "/activityReg",
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"actId": actId
+
+					}),
+					success: function (result) {
+						alert(result.toString())
+						console.log(result);
+						if(result.toString()=='注册成功'){//将已报名人数更新
+						   $('#actRegNumber').text(parseInt($('#actRegNumber').text())+1);
+						}else{
+
+						}
+					},
+					error: function (result) {
+						alert("错误："+result.toString())
+					}
+				})
+			}else{//人数已经满了
+				alert('报名人数已经满啦')
+			}
+
+
+		}
+
+		function extension(){
+
+			document.getElementById('extension_button').style.display='none';
+
+			document.getElementById('extension_div').style.display='block';
+
+		}
+		function showTeamDiv(){
+
+			document.getElementById('team_popDiv').style.display='block';
+
+			document.getElementById('team_bg').style.display='block';
+
+		}
+
+
+
+		function closeTeamDiv(){
+
+			document.getElementById('team_popDiv').style.display='none';
+
+			document.getElementById('team_bg').style.display='none';
+
+		}
+
+		function submitTeamJoin(actId){
+			//alert(actId)
+
+			document.getElementById('team_popDiv').style.display='none';
+
+			document.getElementById('team_bg').style.display='none';
+			var actNumber =  parseInt($('#actNumber').text())
+			var actRegNumber =  parseInt($('#actRegNumber').text())
+			var teamNum =  parseInt($('#teamNum').val())
+// alert("actNumber"+actNumber)
+// alert("actRegNumber"+actRegNumber)
+// alert("teamNum"+teamNum)
+
+			if(actRegNumber+teamNum<actNumber){//可以报名
+				$.ajax({
+					type: "POST",
+					url: "/activityTeamReg",
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"teamAct": {"actId": actId},
+						"teamNumber":teamNum
+
+					}),
+					success: function (result) {
+						//alert(result.toString())
+						console.log(result);
+						if(result.toString()=='success'){//将已报名人数更新
+							//alert("success")
+							$('#actRegNumber').text(parseInt($('#actRegNumber').text())+teamNum);
+						}else{
+							alert('报名失败')
+						}
+					},
+					error: function (result) {
+						alert("错误："+result.toString())
+					}
+				})
+			}else{//人数已经满了
+				alert('报名人数已经满啦')
+			}
+
+
+
+		}
+
+	</script>
+</body>
+</html>

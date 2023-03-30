@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>自然有你</title>
+	<link rel="stylesheet"  th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+</head>
+<body>
+	<div class="header" th:replace="_fragments :: menu(1)">
+		<div>
+			<a href="index.html" id="logo"><img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img"/>
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a th:href="@{/index}" href="index.html">首页</a>
+					</li>
+					<li>
+						<a th:href="@{/news}" href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a th:href="@{/activity}" href="programs.html">活动</a>
+					</li>
+					<li>
+						<a th:href="@{/gallery}" href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a th:href="@{/contact}" href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a th:href="@{/comment}" href="interaction.html">互动</a>
+					</li>
+					<li>
+						<a th:href="@{/profile}" href="personal.html">我的</a>
+					</li>
+
+
+
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="home">
+			<div class="featured">
+				<div>
+					<p>
+						我们只有一个地球 <br> 共在一片蓝天下<br> <!--让我们采取新行动保护和净化我们的地球-->
+					</p>
+					<br>
+					<h2>请伸出你的双手<br><br>捧出你的爱心<br><br><br><span>行动起来吧！</span></h2>
+				</div>
+			</div>
+			<div class="section">
+				<div>
+					<div>
+						<a th:href="@{/gallery}" href="gallery.html">
+
+<!--							<img src="../static/images/landscape1.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape2.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape3.jpg" alt="" class="gallery_img"/>&lt;!&ndash;-->
+<!--						45	&ndash;&gt;<img src="../static/images/landscape4.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape5.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape7.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape8.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape9.jpg" alt="" class="gallery_img"/>&lt;!&ndash;-->
+<!--							&ndash;&gt;<img src="../static/images/landscape10.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape11.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape12.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape1.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape2.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape3.jpg" alt="" class="gallery_img"/>&lt;!&ndash;-->
+<!--							&ndash;&gt;<img src="../static/images/landscape4.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape5.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape7.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape8.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape9.jpg" alt="" class="gallery_img"/>&lt;!&ndash;-->
+<!--							&ndash;&gt;<img src="../static/images/landscape5.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape10.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape11.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape12.jpg" alt="" class="gallery_img"/>&lt;!&ndash;-->
+<!--							&ndash;&gt;<img src="../static/images/landscape5.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape11.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape1.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape2.jpg" alt="" class="gallery_img"/>&lt;!&ndash;-->
+<!--							&ndash;&gt;<img src="../static/images/landscape3.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape4.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape5.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape6.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape7.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape8.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape9.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape10.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape11.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape12.jpg" alt="" class="gallery_img"/><img src="../static/images/landscape1.jpg" alt="" class="gallery_img"/>-->
+<!--						-->
+						<img th:each="picture:${pictureList}" th:src="@{${picture.picImagePath}}" class="gallery_img">
+						</a>
+						<p style="margin-top: 9px;">
+							海量高清风景照，动物照，城市生活照，任你挑选下载☜
+
+						</p>
+					</div>
+					<div>
+						<h3><a th:href="@{/activity}"  href="activity.html">最新活动</a></h3>
+						<ul>
+							<li th:each="activity:${activityList}">
+								<a  th:href="@{/toActivityDetail/{actId}(actId=${activity.actId})}" href="activity_detail.html"><img th:src="@{${activity.actImg}}" style="width: 275px;height: 200px" src="../static/images/top-program1.jpg" alt=""></a>
+								<h4><a  th:href="@{/toActivityDetail/{actId}(actId=${activity.actId})}" href="activity_detail.html" th:text="${activity.actName}">活动名称</a></h4>
+								<p>
+
+									地点：<span class="span_class" th:text="${activity.actPlace}">山东 青岛</span><br>
+									时间：<span class="span_class" th:text="${#dates.format(activity.actStartDate,'yyyy-MM-dd HH:mm:ss')}">3月27号 0：00开始</span><br>
+									活动状态：<span class="state_class" th:text="${activity.actStatus.statusName}">招募中</span><br>
+
+								</p>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+				<div>
+					<div>
+						<a  th:href="@{/comment}" href="interaction.html"><img th:src="@{/images/interaction.jpg}"     src="../static/images/interaction.jpg" alt="" class="interaction_img"></a>
+						<p>
+							欢迎你提出各种问题各种话题参与互动☜
+
+						</p>
+					</div>
+					<div>
+						<h3><a  th:href="@{/news}" href="blog.html">最新资讯</a></h3>
+						<ul>
+							<li th:each="news,newsStat: ${newsList}">
+								<a  th:href="@{/toNewsDetail/{newsId}(newsId=${news.newsId})}" href="blog-single.html"><img th:src="@{${news.newsImagePath}}"   style="width: 120px;height: 120px" src="../static/images/blog-post1.jpg" alt=""></a>
+								<div style="margin-top: -120px">
+									<h4><a th:href="@{/toNewsDetail/{newsId}(newsId=${news.newsId})}" href="blog-single.html"  th:text="${news.newsTitle}">杨絮漫天满天飘洋，是好是坏？</a></h4>
+									<p >
+										<span th:text="${#strings.abbreviate(news.newsContent,50)}">离开江南二十多年，很多事情记得已经不是很真切了，也淡忘了江南柳絮飞舞的情景。在北京柳絮是遭人厌烦的，每年的晚春，帝都的柳絮如曹雪芹在《红楼梦》描绘的大雪……</span><a th:href="@{/toNewsDetail/{newsId}(newsId=${news.newsId})}"  href="blog-single.html" class="more">Read More</a>
+									</p>
+								</div>
+							</li>
+<!--							<li>-->
+<!--								<a href="blog-single.html"><img th:src="@{/images/blog-post2.jpg}" src="../static/images/blog-post2.jpg" alt=""></a>-->
+<!--								<div>-->
+<!--									<h4><a href="blog-single.html">地球环保靠大家</a></h4>-->
+<!--									<p>-->
+<!--										柳絮几乎是无孔不入，门窗关得再紧，屋内总能找到一团一团的柳絮，扫把一扫就飞了起来，很难收拾干净。落到地上的柳絮到是有些趣味，自动呼朋唤友在墙角、街沿打转像雪球一样…… <a href="blog-single.html" class="more">Read More</a>-->
+<!--									</p>-->
+<!--								</div>-->
+<!--							</li>-->
+<!--							<li>-->
+<!--								<a href="blog-single.html"><img  th:src="@{/images/blog-post2.jpg}" src="../static/images/blog-post2.jpg" alt=""></a>-->
+<!--								<div>-->
+<!--									<h4><a href="blog-single.html">地球环保靠大家</a></h4>-->
+<!--									<p>-->
+<!--										柳絮几乎是无孔不入，门窗关得再紧，屋内总能找到一团一团的柳絮，扫把一扫就飞了起来，很难收拾干净。落到地上的柳絮到是有些趣味，自动呼朋唤友在墙角、街沿打转像雪球一样…… <a href="blog-single.html" class="more">Read More</a>-->
+<!--									</p>-->
+<!--								</div>-->
+<!--							</li>-->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="blog.html">新闻</a>
+				</li>
+				<li>
+					<a href="activity.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="interaction.html">互动</a>
+				</li>
+				<li>
+					<a href="personal.html">我的</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+</body>
+</html>

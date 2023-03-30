@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>自然有你后台管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <link rel="stylesheet" th:href="@{/css/font.css}" href="../../static/css/font.css">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}" href="../../static/css/xadmin.css">
+
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content" >
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" style=" overflow: auto;">
+				<div class="layui-form-item">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>活动名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actNumber}">植树活动</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>发起人
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actPromoter.userName}">用户123</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>活动类别
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actTag.tagName}">植树防沙</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>活动状态
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actStatus.statusName}" >待招募</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>活动开始时间
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${#dates.format(activity.actStartDate,'yyyy-MM-dd HH:mm:ss')}">2020-01-23</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>活动结束时间
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${#dates.format(activity.actDeadLine,'yyyy-MM-dd HH:mm:ss')}">2020-03-23</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>报名开始时间
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${#dates.format(activity.actRegDate,'yyyy-MM-dd HH:mm:ss')}">2019-12-23</span>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        
+                    </div>
+                </div>
+				
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>报名截止时间
+                    </label>
+                    <div class="layui-input-inline">
+                        
+						<span class="layui-input" th:text="${#dates.format(activity.actRegDeadline,'yyyy-MM-dd HH:mm:ss')}">2020-01-20</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>地点
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actPlace}">山东 青岛</span>
+                    </div>
+                </div>
+				
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>人数限制
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actNumber}">无上限</span>
+                    </div>
+                </div>
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>报名要求
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actRequire}">无</span>
+                    </div>
+                </div>
+				
+				<div class="layui-form-item">
+                    <label class="layui-form-label">
+                        <span class="x-red">*</span>宣传口号
+                    </label>
+                    <div class="layui-input-inline">
+                        <span class="layui-input" th:text="${activity.actSlogan}">XXXXXXXXXXXXXX</span>
+                    </div>
+                </div>
+				
+                
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <script    type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script    type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script th:src="@{/lib/layui/layui.js}"   src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript"   th:src="@{/js/xadmin.js}"     src="../../static/js/xadmin.js"></script>
+    <!--/*/</th:block>/*/-->
+
+</body>
+</html>

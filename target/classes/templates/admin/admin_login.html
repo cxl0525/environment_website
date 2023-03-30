@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>自然有你后台管理系统——登录</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+	<link rel="stylesheet" th:href="@{/css/font.css}" href="../../static/css/font.css">
+	<link rel="stylesheet" th:href="@{/css/xadmin.css}" href="../../static/css/xadmin.css">
+
+
+</head>
+
+<body>
+    <div class="login-logo"><h1>自然有你后台管理系统</h1></div>
+    <div class="login-box">
+        <form class="layui-form layui-form-pane"  method="post">
+<!--            action="@{/admin/loginSubmit}"-->
+
+            <h3>登录你的帐号</h3>
+            <label class="login-title" for="username">帐号</label>
+            <div class="layui-form-item">
+                <label class="layui-form-label login-form"><i class="iconfont">&#xe6b8;</i></label>
+                <div class="layui-input-inline login-inline">
+                  <input type="text" id="username" name="username" lay-verify="required" placeholder="请输入你的帐号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <label class="login-title" for="password">密码</label>
+            <div class="layui-form-item">
+                <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>
+                <div class="layui-input-inline login-inline">
+                  <input type="text" id="password" name="password" lay-verify="required" placeholder="请输入你的密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-warning pull-right" lay-submit lay-filter="login"  type="submit">登录</button>
+                <div class="forgot"><a href="#" class="forgot">忘记帐号或者密码</a></div>
+            </div>
+        </form>
+    </div>
+	<div class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" th:src="@{/images/a.jpg}" src="../../static/images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/b.jpg}" src="../../static/images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/c.jpg}" src="../../static/images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/d.jpg}" src="../../static/images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/e.jpg}" src="../../static/images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/f.jpg}" src="../../static/images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/g.jpg}" src="../../static/images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/h.jpg}" src="../../static/images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/i.jpg}" src="../../static/images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/g.jpg}" src="../../static/images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" th:src="@{/images/k.jpg}"  src="../../static/images/k.jpg" alt=""></div>
+                <div class="swiper-slide"><span class="reset">初始化</span></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
+    </div>
+
+
+
+
+	<script    type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script    type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script th:src="@{/lib/layui/layui.js}"   src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript"   th:src="@{/js/xadmin.js}"     src="../../static/js/xadmin.js"></script>
+    <script th:inline="javascript" >
+
+        $(function  () {
+            layui.use('form', function(){
+                var form = layui.form();
+                //监听提交
+                form.on('submit(login)', function(data){
+                    // layer.msg(JSON.stringify(data.field),function(){
+                    //     // location.href='index.html'
+                    //     //location.href='[[@{/admin/loginSubmit}]]'
+                    // });
+                   // alert(data);
+
+                    if($('#username').val()!="admin"){
+                        layer.msg("登录失败，用户名或密码错误");
+                        return false;
+                    }
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/loginSubmit",
+                        contentType: 'application/json',
+                        timeout : 20000,
+                        data: JSON.stringify({
+                             "userName": $('#username').val(),
+                             "userPassword": $('#password').val()
+
+                        }),
+                        success: function (result) {
+                           // alert(result.toString())
+                            console.log(result);
+                            if(result.toString()=='success'){//将已报名人数更新
+                                layer.msg("登录成功");
+                                location.href = "/admin/index"
+                            }else if(result.toString()=='checkfail'){
+                                layer.msg("登录失败，用户状态异常无法登陆");
+                            }
+                            else{
+                                layer.msg("登录失败，用户名或密码错误");
+
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    layer.msg("登录失败")
+                                    // alert("请求对象XMLHttpRequest: "+XMLHttpRequest);
+                                    // alert("错误类型textStatus: "+textStatus);
+                                    // alert("异常对象errorThrown: "+errorThrown);
+
+                                }
+                    })
+                    return false;
+                });
+            });
+        })
+
+    </script>
+</body>
+</html>

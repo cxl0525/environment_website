@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qdu.mapper.UserMapper">
+    <resultMap id="UserMap" type="User">
+        <id column="userId" property="userId"/>
+        <result property="userName" column="userName"/>
+        <result property="userPassword" column="userPassword"/>
+        <result property="userRealName" column="userRealName"/>
+        <result property="userGender" column="userGender"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userIdentity" column="userIdentity"/>
+        <result property="userEmail" column="userEmail"/>
+        <result property="userAddress" column="userAddress"/>
+        <result property="userQQId" column="userQQId"/>
+        <result property="userWeChatId" column="userWeChatId"/>
+        <result property="userAvatar" column="userAvatar"/>
+        <result property="userScore" column="userScore"/>
+        <result property="userCreateDate" column="userCreateDate"/>
+        <result property="userIsCheck" column="userIsCheck"/>
+        <association property="userRate" javaType="Rate">
+            <id column="rateId" property="rateId"/>
+            <result column="rateName" property="rateName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryUserList" resultMap="UserMap">
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId
+  </select>
+
+    <select id="queryUserById" resultMap="UserMap">
+
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId WHERE u.userId = #{userId}
+
+
+
+</select>
+
+    <select id="queryUserByUserNameAndUserPassword" resultMap="UserMap">
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId
+    WHERE userName = #{userName} and userPassword = #{userPassword}
+    </select>
+    <select id="queryUserByUserName" resultMap="UserMap">
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId WHERE userName = #{userName}
+    </select>
+    <select id="queryUserListByActivityId" resultType="User">
+select u.* from user u,  useractivity ua ,activity a
+where
+ua.actId = a.actId AND ua.userId = u.userId and ua.actId = #{actId}
+</select>
+    <select id="queryUserActivityByUserIdAndActId" resultType="User">
+        SELECT * FROM useractivity WHERE userId = #{userId} AND actId =#{actId}
+    </select>
+    <select id="queryUserListByUserIsCheck" resultType="User">
+        SELECT * FROM user WHERE userIsCheck = #{userIsCheck}
+    </select>
+    <select id="queryUserListByUserIsCheck12" resultType="User">
+        SELECT * FROM user WHERE userIsCheck = 1 or userIsCheck = 2
+    </select>
+
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyColumn="userId" keyProperty="userId">
+    insert into user (userName,userPassword,userRealName,userGender,userPhone,userIdentity,userEmail,userAddress,userQQId,userWeChatId,userAvatar,userCreateDate,userIsCheck)
+    values (#{userName},#{userPassword},#{userRealName},#{userGender},#{userPhone},#{userIdentity},#{userEmail},#{userAddress},#{userQQId},#{userWeChatId},#{userAvatar},#{userCreateDate},#{userIsCheck})
+    </insert>
+
+    <insert id="insertScore" parameterType="Score">
+    insert into environment.score (userId,userScore) values(#{userId},#{userScore})
+</insert>
+
+    <update id="updateUserIsCheck" parameterType="User">
+    update environment.user set userIsCheck=#{userIsCheck} where userId = #{userId}
+</update>
+
+    <update id="updateUserEdit" parameterType="User">
+    update environment.user set userName=#{userName},userAddress=#{userAddress},userEmail=#{userEmail},userPhone=#{userPhone},userGender=#{userGender} where userId = #{userId}
+</update>
+    <update id="updateUserPwd" parameterType="User">
+    update environment.user set userPassword=#{userPassword} where userId = #{userId}
+</update>
+    <update id="updateUserBasic" parameterType="User">
+    update user set userName = #{userName},userGender=#{userGender}, userPhone = #{userPhone},userIdentity=#{userIdentity}, userAddress = #{userAddress},userEmail=#{userEmail}, userQQId = #{userQQId},userWeChatId=#{userWeChatId}
+    where userId = #{userId}
+</update>
+    <update id="updateUserAvatar" parameterType="User">
+    update user set userAvatar = #{userAvatar}  where userId = #{userId}
+</update>
+    <delete id="deleteUser" parameterType="int">
+    delete from user where userId = #{userId}
+</delete>
+
+    <select id="queryUserListSearch" resultMap="UserMap">
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId
+    where u.userCreateDate between #{userCreateDate1} and #{userCreateDate2}
+    and u.userName like CONCAT('%',#{userName},'%') and u.userIsCheck = 1 or u.userIsCheck = 2
+  </select>
+
+    <select id="queryUserDelSearch" resultMap="UserMap">
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId
+    where u.userCreateDate between #{userCreateDate1} and #{userCreateDate2}
+    and u.userName like CONCAT('%',#{userName},'%') and u.userIsCheck = 3
+  </select>
+
+
+    <select id="queryUserViewSearch" resultMap="UserMap">
+    select u.* ,sr.userScore,sr.rateId,sr.rateName from user u
+    LEFT JOIN
+    ( SELECT * FROM
+    (SELECT * FROM score s,rate r WHERE s.userScore BETWEEN r.rateMinScore and r.rateMaxScore) sr1
+    )sr
+    ON u.userId = sr.userId
+    where u.userCreateDate between #{userCreateDate1} and #{userCreateDate2}
+    and u.userName like CONCAT('%',#{userName},'%') and u.userIsCheck = 0
+  </select>
+    <update id="updateScore" parameterType="User" >
+    update score set userScore=#{userScore} where userId = #{userId}
+</update>
+
+
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qdu.mapper.CommentMapper">
+<resultMap id="CommentMap" type="Comment">
+<!--    comId	comUser	comContent	comCreateTime	comParentComment-->
+    <id column="comId" property="comId"></id>
+    <result column="comContent" property="comContent"></result>
+    <result column="comCreateTime" property="comCreateTime"></result>
+    <result column="comLikeNum" property="comLikeNum"></result>
+    <association property="comUser" javaType="user">
+        <id column="comUser" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="userPhone" property="userPhone"/>
+        <result column="userAvatar" property="userAvatar"/>
+
+    </association>
+</resultMap>
+    <resultMap id="CommentMap2" type="Comment">
+        <!--    comId	comUser	comContent	comCreateTime	comParentComment-->
+        <id column="comId" property="comId"></id>
+        <result column="comContent" property="comContent"></result>
+        <result column="comCreateTime" property="comCreateTime"></result>
+
+
+        <association property="comUser" javaType="user">
+            <id column="comUser" property="userId"/>
+            <result column="userName" property="userName"/>
+            <result column="userPhone" property="userPhone"/>
+            <result column="userAvatar" property="userAvatar"/>
+        </association>
+        <collection property="childComments" ofType="Comment">
+            <id column="ccomId" property="comId"></id>
+        </collection>
+
+    </resultMap>
+
+    <select id="queryCommentListOne" resultMap="CommentMap2">
+
+SELECT  c1.comId comId , c1.comUser comUser,c1.comParentComment comParentComment,  c1.comContent comContent, c1.comCreateTime comCreateTime ,
+c1.comLikeNum comLikeNum,u.*,c2.comId ccomId
+from `comment` c1
+LEFT JOIN `comment` c2 ON c1.comId = c2.comParentComment
+LEFT JOIN `user` u on c1.comUser = u.userId
+WHERE
+c1.comId
+not in (SELECT comId FROM activitycomment ) AND
+c1.comParentComment is NULL
+ORDER BY c1.comCreateTime DESC
+
+    </select>
+
+<select id="queryCommentListByActivityId" resultMap="CommentMap">
+SELECT c.*,u.* FROM `comment` c,activitycomment ac,activity a,`user`u
+WHERE u.userId = c.comUser AND c.comId = ac.comId AND ac.actId =a.actId  And a.actId = #{actId}
+</select>
+
+    <select id="queryCommentById" resultMap="CommentMap2" >
+SELECT  c1.comId comId , c1.comUser comUser,c1.comParentComment comParentComment,  c1.comContent comContent, c1.comCreateTime comCreateTime ,
+c1.comLikeNum comLikeNum,u.*,c2.comId ccomId
+from `comment` c1
+LEFT JOIN `comment` c2 ON c1.comId = c2.comParentComment
+LEFT JOIN `user` u on c1.comUser = u.userId
+WHERE
+ c1.comId = #{comId}
+    </select>
+    <select id="queryCommentListByParentId" resultMap="CommentMap">
+
+SELECT * FROM `comment` c, `user` u
+WHERE c.comUser = u.userId AND comParentComment = #{comParentComment}
+    </select>
+    <select id="queryCommentListByUserLikeAndParentId" resultMap="CommentMap">
+        SELECT * from usercommentlike WHERE userId = #{userId}
+AND comId in (SELECT comId FROM `comment` WHERE  comParentComment = #{comParentComment} )
+    </select>
+
+
+
+
+    <select id="queryCommentListOneNoChild" resultMap="CommentMap">
+
+SELECT * FROM `comment` c1
+LEFT JOIN `user` u on c1.comUser = u.userId
+WHERE c1.comId
+not in (SELECT comId FROM activitycomment )
+AND c1.comParentComment is NULL
+    </select>
+    <select id="queryCommentListOneNoChildByKeyWord" resultMap="CommentMap">
+        SELECT * FROM `comment` c1
+LEFT JOIN `user` u on c1.comUser = u.userId
+WHERE c1.comId
+not in (SELECT comId FROM activitycomment )
+AND c1.comParentComment is NULL
+<if  test="keyWords != null and keyWords.size() > 0">
+  and
+<foreach collection="keyWords" item="item" index="index" open="(" separator="or" close=")">
+c1.comContent LIKE  CONCAT('%',#{item},'%')
+</foreach>
+</if>
+    </select>
+    <insert id="addCommentNotOne"  useGeneratedKeys="true" keyColumn="comId" keyProperty="comId" parameterType="Comment">
+        insert into comment
+        (comUser,comContent,	comCreateTime,	comParentComment,	comLikeNum)
+        values (#{comUser.userId},#{comContent},	#{comCreateTime},	#{comParentComment.comId},	#{comLikeNum})
+    </insert>
+
+    <insert id="addCommentActivity" parameterType="Comment">
+        INSERT INTO activitycomment (actId,comId) VALUES(#{comActivity.actId},#{comId})
+    </insert>
+    <insert id="addCommentOne"  useGeneratedKeys="true" keyColumn="comId" keyProperty="comId" parameterType="Comment">
+        insert into comment
+        (comUser,comContent,	comCreateTime,comLikeNum)
+        values (#{comUser.userId},#{comContent},	#{comCreateTime},	#{comLikeNum})
+    </insert>
+    <insert id="addUserCommentLike">
+         insert  into UserCommentLike (userId,comId)
+         VALUES(#{userId},#{comId})
+    </insert>
+    <delete id="deleteUserCommentLike">
+        delete from UserCommentLike where userId = #{userId} and comId = #{comId}
+    </delete>
+<delete id="deteleComment">
+    delete from comment where comId = #{comId}
+</delete>
+    <select id="queryCommentListTwo" resultMap="CommentMap">
+        SELECT * FROM `comment` c, `user` u
+WHERE c.comUser = u.userId AND comParentComment is not null
+    </select>
+    <delete id="deteleUserCommentLisk">
+    delete from usercommentlike where comId = #{comId}
+</delete>
+
+    <select id="queryCommentListOneSearch" resultMap="CommentMap">
+
+SELECT * FROM `comment` c1
+LEFT JOIN `user` u on c1.comUser = u.userId
+WHERE c1.comId
+not in (SELECT comId FROM activitycomment )
+AND c1.comParentComment is NULL
+and c1.comCreateTime between #{comCreateTime1} and #{comCreateTime2}
+ORDER BY c1.comCreateTime DESC
+    </select>
+
+    <select id="queryCommentListTwoSearch" resultMap="CommentMap">
+        SELECT * FROM `comment` c, `user` u
+WHERE c.comUser = u.userId AND comParentComment is not null
+and c.comCreateTime between #{comCreateTime1} and #{comCreateTime2}
+ORDER BY c1.comCreateTime DESC
+    </select>
+
+
+</mapper>

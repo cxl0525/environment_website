@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>发布博客</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+	
+</head>
+	
+	
+	
+<body>
+	<div th:replace="_fragments :: menu(2)" class="header">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索">
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="#">互动</a>
+					</li>
+					<li>
+						<a href="#">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="contact" style="padding-right: 0px;">
+	<div>
+	  <h2>发布博客</h2>
+				<div style="height: 1px; width: 702px; background:url(../static/images/arrow-gray.png) repeat-x; border: none"></div>
+
+				<form th:action="@{/launchNews}" action="index.html" enctype="multipart/form-data" method="post" class="launch_blog_form" >
+
+					<label for="newsTitle">标题<font style="color: red">*</font>
+						<input type="text" id="newsTitle" name="newsTitle" class="register_input" required>
+
+					</label>
+
+					<br>
+
+					<label for="newsTag.tagId">分类<font style="color: red;margin-right: 20px;">*</font>
+						<select name="newsTag.tagId" id="newsTag.tagId" class="category_class" >
+							<option value="请选择类别">请选择类别</option>
+							<option th:each="tag:${tags}" th:value="${tag.tagId}" th:text="${tag.tagName}" value="植树防沙">植树防沙</option>
+
+							<!--							<option value="植树防沙">植树防沙</option>-->
+<!--							<option value="海洋保护">海洋保护</option>-->
+<!--							<option value="垃圾分类">垃圾分类</option>-->
+<!--							<option value="清洁水源">清洁水源</option>-->
+<!--							<option value="动物保护">动物保护</option>-->
+<!--							<option value="培训讲座">培训讲座</option>-->
+						</select>
+					</label>
+					<br>
+					<label for="newsImagePath1">图片<font style="color: red; margin-right: 26px;">*</font>
+						<input type="file" id="newsImagePath1" name="newsImagePath1" class="file_input" required/>
+					</label>
+					<br>
+					<label for="newsVideoPath1">视频<font style="margin-right: 33px;"></font>
+
+					<input type="file" id="newsVideoPath1" name="newsVideoPath1" class="file_input" />
+					</label>
+					<br>
+					<!--富文本编辑器-->
+					<label for="newsContent">内容<font style="color: red">*</font>
+						<textarea id="newsContent" name="newsContent" class="launch_blog_area"
+								  cols="30" rows="10" ></textarea>
+					</label>
+
+
+					<br>
+
+					<input type="submit" value="发布" class="register_button" />
+
+
+			</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</form>
+
+	</div>
+		</div>
+</div>
+		
+	
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+	<script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+
+	<script>
+	//初始化Markdown编辑器
+	var contentEditor;
+	$(function() {
+		contentEditor = editormd("md-content", {
+			width   : "100%",
+			height  : 640,
+			syncScrolling : "single",
+//        path    : "../static/lib/editormd/lib/"
+			path    : "/lib/editormd/lib/"
+		});
+	});
+</script>
+</body>
+
+	
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>互动讨论详情</title>
+	<link rel="stylesheet"  th:href="@{/css/style.css}"   href="../static/css/style.css" type="text/css">
+</head>
+<body>
+	<div th:replace="_fragments :: menu(6)" class="header">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索">
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="interaction.html">互动</a>
+					</li>
+					<li>
+						<a href="#">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body" id="comment-container">
+		<div class="interaction" th:fragment="interactionList" >
+			<div>
+				<h2>互动讨论</h2>
+				<div>
+					
+					<form action="interaction.html" class="interaction_search">
+						<input type="text" name="serachContent" id="searchContent"/>
+						<button class="search_button"><img th:src="@{/images/search.png}" src="../static/images/search.png"></button>
+					</form>
+					<button class="question_button" onClick="showLaunchInteractionDiv()">发表评论</button>
+				</div>
+				
+			</div>
+			<div class="interaction_line"></div>
+			<div class="interaction_title">
+				<div  class="activity_comment_list_div">
+						<div class="user_avatar">
+						<img   th:src="@{${comment.comUser.userAvatar}}" src="../static/images/avatar2.jpg"/>
+						</div>
+						<div class="user_comment">
+							<span class="username"  th:text="${comment.comUser.userName}" >用户456</span>
+							<span class="replyNumber">[[${comment.childComments.size()}]]&nbsp;&nbsp;条回复</span>
+							<br>
+							<span class="time" th:text="${#dates.format(comment.comCreateTime,'yyyy-MM-dd HH:mm:ss')}">2020-2-21</span>
+							
+							<p  th:text="${comment.comContent}">中国工业固体废物年产生量达8.2亿吨，综合利用率约46%。中国城市生活垃圾年产生量为1.4亿吨，达到无害化处理要求的不到10%。塑料包装物和农膜导致的白色污染已蔓延中国各地。</p>
+						</div>
+					
+					<div class="hr_div">
+						
+					</div>
+						
+					</div>
+			</div>
+			<div class="interaction_content">
+				<div  th:each="childComment : ${pageInfo.list}" class="activity_comment_list_div" >
+						<div class="user_avatar">
+						<img  th:src="@{${childComment.comUser.userAvatar}}" src="../static/images/avatar1.jpg"/>
+						</div>
+						<div class="user_comment">
+							<span class="username" th:text="${childComment.comUser.userName}">用户123</span>
+							<span class="like_span"  th:onclick="clickLike(this,[[${childComment.comId}]])" onClick="clickLike(this)">
+							<span class="replyNumber"th:style="${childComment.isLike == 1}?'color:red':'color:#B9B5B5'" th:text="${childComment.comLikeNum}">
+								24</span>
+								<img th:src="${childComment.isLike == 1}?@{/images/like_red.PNG}:@{/images/like.PNG}"  src="../static/images/like.PNG" class="like_img"  alt=""/></span>
+<!--								<img th:src="@{/images/like.PNG}" th:if="${childComment.isLike == 0}" src="../static/images/like.PNG" class="like_img"  alt=""/></span>-->
+
+							<br>
+							<span class="time" th:text="${#dates.format(childComment.comCreateTime,'yyyy-MM-dd HH:mm:ss')}">2020-1-21</span>
+							
+							<p th:text="${childComment.comContent}">走在小河边，倾听着风的声音。小河上，有几只小鸭子在湖中捉鱼、玩耍，一阵风吹来，湖面上荡漾起了碧波。小桥边的柳树郁郁葱葱，十分茂盛，仿佛是一位漂亮的姑娘在梳洗着头发。小桥前有连绵起伏的山峦，宛如一条卧龙。我走在小河边，哼起了小歌，听着树叶摇动的声音，听着鸭子的笑声，心想我们一定要保护好我们美丽的家乡！</p>
+						</div>
+					
+					<div class="hr_div">
+						<hr style="height:1.5px;border:none;border-top:1.5px solid #555555; opacity: 0.3; color: grey"  >
+					</div>
+						
+					</div>
+			</div>
+			<div class="page_number_div">
+        <span class="pageinfo">
+            共<label id="total" th:text="${pageInfo.total}"></label>条/
+            <label th:text="${pageInfo.pages}" style="color: red"></label>页
+        </span>
+
+				<a th:href="@{${pageRequest}(pageNum=${1})}"  >首页</a>
+				<a th:if="${pageInfo.pageNum>1}" th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum - 1})}" >上一页</a>
+
+				<b th:each="nav:${pageInfo.navigatepageNums}">
+					<a th:href="@{${pageRequest}(pageNum=${nav})}" class="page_number" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+					<a href="#" class="page_number_live" th:if= "${nav == pageInfo.pageNum}" th:text="${nav}"></a>
+				</b>
+
+				<a th:if="${pageInfo.pageNum<pageInfo.pages}"  th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum + 1})}"> 下一页</a>
+				<a th:href="@{${pageRequest}(pageNum=${pageInfo.pages})}">尾页</a>
+			</div>
+			
+			<div id="launch_interaction_div" class="launch_interaction_div" style="display:none;">
+				<div class="top_div"><span>发表观点或问题</span><button class="cancel_button" onClick="closeLaunchInteractionDiv()">x</button></div>
+				<br>
+<!--				<form action="interaction.html">-->
+				<textarea id="comContent" class="comment_textarea" placeholder="说点什么吧！" required></textarea>
+				<br>
+				<button class="submit_button" th:onclick="submitInteraction([[${comment.comId}]])"   onClick="submitInteraction()">发表讨论</button>
+<!--				</form>-->
+			</div>
+			<div id="launch_interaction_bg" class="launch_interaction_bg" style="display:none;"></div>
+			
+		</div>
+	</div>
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+
+	<script th:src="@{/js/interaction.js}" src="../static/js/interaction.js"></script>
+	<script th:inline="javascript">
+		// JavaScript Document
+		function clickLike(obj, comId) {
+			//alert(comId)
+			var span_array = obj.getElementsByTagName("span");
+			var number_span = span_array[0];
+			var number = parseInt(number_span.innerHTML);
+
+			var img_array = obj.getElementsByTagName("img");
+			var number_img = img_array[0];
+
+			if (number_img.src.endsWith("like.PNG")) {
+
+				$.ajax({
+					type: "POST",
+					url: "/commentuserlike",
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"comId": parseInt(comId),
+						"isLike": 1
+
+					}),
+					success: function (result) {
+						alert(result.toString())
+						console.log(result);
+						number = number + 1;
+						number_span.innerHTML = number;
+						number_img.src = "/images/like_red.PNG";
+						number_span.style.color = "red";
+					},
+					error: function (result) {
+						alert("错误：" + result.toString())
+					}
+				})
+
+			} else if (number_img.src.endsWith("like_red.PNG")) {
+
+
+				$.ajax({
+					type: "POST",
+					url: "/commentuserlike",
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"comId": parseInt(comId),
+						"isLike": -1
+
+					}),
+					success: function (result) {
+						//alert(result.toString())
+						console.log(result);
+						number = number - 1;
+						number_span.innerHTML = number;
+						number_img.src = "/images/like.PNG";
+						number_span.style.color = "#B9B5B5";
+					},
+					error: function (result) {
+						alert("错误：" + result.toString())
+					}
+				})
+			}
+
+
+		}
+
+		function showLaunchInteractionDiv() {
+
+			document.getElementById('launch_interaction_div').style.display = 'block';
+
+			document.getElementById('launch_interaction_bg').style.display = 'block';
+
+		}
+
+
+		function closeLaunchInteractionDiv() {
+
+			document.getElementById('launch_interaction_div').style.display = 'none';
+
+			document.getElementById('launch_interaction_bg').style.display = 'none';
+
+		}
+
+		function submitInteraction(comId) {
+
+			var interaction_comment = document.getElementById("comContent").value;
+
+			//alert(interaction_comment);
+
+			document.getElementById('launch_interaction_div').style.display = 'none';
+
+			document.getElementById('launch_interaction_bg').style.display = 'none';
+			if (interaction_comment == "" || null) {
+				alert("评论内容不能为空！")
+			} else {//ajax提交信息（敏感字处理）
+				//alert(interaction_comment)
+				postData(parseInt(comId), interaction_comment);
+			}
+
+
+		}
+
+		function postData(comId, comContent) {
+			//  alert(comId + comContent)
+			$("#comment-container").load(/*[[@{/commentAndTopic}]]*/"", {
+				"comParentComment.comId": comId,
+				"comContent": comContent
+			}, function (responseTxt, statusTxt, xhr) {
+//        $(window).scrollTo($('#comment-container'),500);
+				clearContent();//不生效
+
+			});
+
+		}
+
+		function clearContent() {
+			$("[id='comContent']").val('');
+
+		}
+	</script>
+</body>
+</html>

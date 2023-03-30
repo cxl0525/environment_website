@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- Website template form http://www.mycodes.net/ -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta charset="UTF-8">
+	<title>图库</title>
+	<link rel="stylesheet"   th:href="@{/css/style.css}" href="../static/css/style.css" type="text/css">
+</head>
+<body>
+	<div class="header" th:replace="_fragments :: menu(4)">
+		<div>
+			<a href="index.html" id="logo"><img src="../static/images/logo.png" alt="logo"></a>
+			<div>
+				<div class="rightTop">
+				<div class="search">
+				<form>
+					<input type="search"  id="input_search"/>
+					
+				</form>
+				
+				</div>
+					<img src="../static/images/search.png" class="search_img" alt="搜索">
+					<div class="login">
+						
+						&nbsp;&nbsp;
+						<a href="login.html">登录</a>
+						<a href="register.html">注册</a>
+					</div>
+				</div>
+				<ul>
+					<li class="selected">
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="blog.html">新闻</a>
+					</li>
+					<li>
+						<a href="activity.html">活动</a>
+					</li>
+					<li>
+						<a href="gallery.html">图库</a>
+					</li>
+					<li>
+						<a href="contact.html">联系我们</a>
+					</li>
+					<li>
+						<a href="interaction">互动</a>
+					</li>
+					<li>
+						<a href="#">我的</a>
+					</li>
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="gallery">
+			<div>
+				<h2>风景图库</h2>
+				<div>
+					<span>分类</span>
+					<ul>
+						<li class="selected">
+							<a th:href="@{/gallery}">全部</a> |
+						</li>
+						<li th:each="type : ${types}">
+							<a th:href="@{/pictureByParentType/{typeId}(typeId=${type.typeId})}" th:text="${type.typeName}"></a> |
+						</li>
+						<li>
+							<a href="#" th:onClick="showLaunchImageDiv()">发布图片</a>
+						</li>
+					</ul>
+				</div>
+				
+			</div>
+			<ul>
+				<li style="margin-right: 5px;" th:each="picture : ${pageInfo.list}">
+					<a><img th:src="@{${picture.picImagePath}}" alt=""  th:onClick="showDiv(this,[[${picture.picId}]])"></a>
+					<h4><a th:text="${picture.picName}"></a></h4>
+					<p>
+						类别：<a class="span" th:href="@{/pictureByType/{typeId}(typeId=${picture.picType.typeId})}" th:text="${picture.picType.typeName}"></a><br>
+						上传者：<a class="span" th:href="@{/pictureByUser/{userId}(userId=${picture.picUser.userId})}" th:text="${picture.picUser.userName}"></a><br>
+						点击：<span id="picClicksNum" th:text="${picture.picClicks}"></span><br>
+					</p>
+				</li>
+			</ul>
+			<div class="page_number_div">
+				<span class="pageinfo">
+					共<label id="total" th:text="${pageInfo.total}"></label>条/
+					<label th:text="${pageInfo.pages}" style="color: red"></label>页
+				</span>
+
+				<a th:href="@{${pageRequest}(pageNum=${1})}"  >首页</a>
+				<a th:if="${pageInfo.pageNum>1}" th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum - 1})}" >上一页</a>
+
+				<b th:each="nav:${pageInfo.navigatepageNums}">
+					<a th:href="@{${pageRequest}(pageNum=${nav})}" class="page_number" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+					<a href="#" class="page_number_live" th:if= "${nav == pageInfo.pageNum}" th:text="${nav}"></a>
+				</b>
+
+				<a th:if="${pageInfo.pageNum<pageInfo.pages}"  th:href="@{${pageRequest}(pageNum=${pageInfo.pageNum + 1})}"> 下一页</a>
+				<a th:href="@{${pageRequest}(pageNum=${pageInfo.pages})}">尾页</a>
+			</div>
+			
+			 <div id="popDiv" class="launch_comment_div" style="display:none;">
+				<button class="cancel_button" th:onClick="closeDiv()">x</button>
+				
+			</div>
+			<div id="bg" class="bg" style="display:none;"></div>
+			
+			
+			<div id="launch_image_div" class="launch_image_div" style="display:none;">
+				<div class="top_div"><span>上传图片</span><button class="cancel_button" onClick="closeLaunchImageDiv()">x</button></div>
+				<br>
+				<form th:action="@{/addPicture}" method="post" enctype="multipart/form-data" onSubmit="return submitImg()">
+					图片名称：<input type="text" name="picName" id="picName" required/>
+					<br>
+					图片类型：
+					<select name="picType" id="picType">
+						<option value="请选择类型">请选择类型</option>
+						<optgroup th:each="type1 : ${types}" th:label="${type1.typeName}">
+							<option th:each="type2 : ${type1.typeList}" th:text="${type2.typeName}" th:value="${type2.getTypeId()}"></option>
+						</optgroup>
+					</select>
+					<br>
+					选择图片：<input type="file" class="image_input" name="picImage" id="picImage" required/><br>
+					<span id="errorSpan" style="float: left; margin-left: 40px; color: red; "></span>
+					<br>
+					<input type="submit" value="确定" class="submit_button"/>
+				</form>
+				<br>
+				
+			</div>
+			<div id="launch_image_bg" class="launch_image_bg" style="display:none;"></div>
+		</div>
+	</div>
+	<div th:replace="_fragments :: footer" class="footer">
+		<div>
+			<div>
+				<h4>24小时客服服务</h4>
+				<ul>
+					<li class="phone-num">
+						512-943-1069 <br> 512-943-1068
+					</li>
+					<li class="email">
+						<a href="#">info@163.com</a>
+					</li>
+					<li class="address">
+						青岛市南区 <br> 漳州二路
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h4>最近推送</h4>
+				<ul>
+					<li>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla elementum magna.
+						</p>
+						- <span><a href="blog.html">1天前</a></span>
+					</li>
+					<li>
+						<p>
+							Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+						</p>
+						- <span><a href="blog.html">2天前</a></span>
+					</li>
+				</ul>
+			</div>
+			<div class="connect">
+				<h4>联系我们</h4>
+				<a href="#" id="facebook">Facebook</a> <a href="#" id="twitter">推特</a> <a href="#" id="googleplus">谷歌+</a>
+				<form action="index.html">
+					<h4>通讯注册</h4>
+					<input type="text" value="电子邮件" onblur="this.value=!this.value?'Enter email address':this.value;" onfocus="this.select()" onclick="this.value='';">
+					<input type="submit" id="submit" value="">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ul>
+				<li>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="about.html">新闻</a>
+				</li>
+				<li>
+					<a href="programs.html">活动</a>
+				</li>
+				<li>
+					<a href="gallery.html">图库</a>
+				</li>
+				<li>
+					<a href="contact.html">联系我们</a>
+				</li>
+				<li>
+					<a href="blog.html">日志</a>
+				</li>
+			</ul>
+			<p>
+				&#169; 2020 自然有你 rights reserved&nbsp;
+			</p>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+	<script th:src="@{/js/gallery.js}"></script>
+
+</body>
+</html>
